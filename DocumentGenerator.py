@@ -2,7 +2,7 @@ from docx import Document
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 from docx.shared import RGBColor
 
-TEMPLATE_FILE = 'template.docx'
+TEMPLATE_FILE = '.template.docx'
 
 DATE_START_TAG = '<date_start>'
 DATE_END_TAG = '<date_end>'
@@ -28,7 +28,7 @@ class Generator:
 
     def generate_loan_protocol(self, middleman_name, client_name, client_address, date_start, date_end, hardware):
         """
-        Generate loan protocol using static template from file 'template.docx'
+        Generate loan protocol using static template from file '.template.docx'
 
         :param middleman_name: first name and last name
         :type middleman_name: str
