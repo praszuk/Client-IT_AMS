@@ -1,56 +1,96 @@
 from docx import Document
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 from docx.shared import RGBColor
-from docx.oxml.shared import OxmlElement, qn
+
+TEMPLATE_FILE = 'template.docx'
+
+DATE_START_TAG = '<date_start>'
+DATE_END_TAG = '<date_end>'
+
+CLIENT_ADDRESS_TAG = '<client_info>'
+CLIENT_NAME = '<client>'
+
+MIDDLEMAN_NAME = '<middleman>'
 
 
-hardware = ['jakas nazwa', 'jakis opis', 'jakis SN1']
+class Generator:
+    """
+        This class will be generate protocols for loans based on rendered template with CONSTANT fields.
+        Class is not flexible, it is adjusted to one type of protocol which basing on structure:
+            - few fields
+            - 2 tables where second contains 1 cell with table inside
+        :param template: path to template docx file
+        :type template: str
+    """
 
-client = 'Jan Kowalski'
-middleman = 'Grazyna Nowak'
-date_start = '25 lipca 2018'
-date_end = '1 sierpnia 2018'
+    def __init__(self, template=TEMPLATE_FILE):
+        self.__document = Document(template)
 
-lender_address = 'Cisco Systems\nul. Domaniewska 39 B\n02-627, Warszawa\nPoland'
+    def generate_loan_protocol(self, middleman_name, client_name, client_address, date_start, date_end, hardware):
+        """
+        Generate loan protocol using static template from file 'template.docx'
 
-document = Document('template.docx')
+        :param middleman_name: first name and last name
+        :type middleman_name: str
 
-for i in range(10):
-    cells = document.tables[0].add_row().cells
-    cells[0].text = hardware[0] + '{}'.format(i)
-    cells[1].text = hardware[1] + '{}'.format(i)
-    cells[2].text = hardware[2] + '{}'.format(i)
+        :param client_name: first name and last name
+        :type client_name: str
 
+        :param client_address: home/business/company address
+        :type client_address: str
 
-for r in document.tables[1].rows:
-    for cell in r.cells:
-        if '<client>' in cell.text:
-            cell.text = cell.text.replace('<client>', client)
-        elif '<middleman>' in cell.text:
-            cell.text = cell.text.replace('<middleman>', middleman)
-            cell.paragraphs[0].paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.RIGHT
+        :param date_start: begin of checkout
+        :type date_start: str
 
-for idx, p in enumerate(document.paragraphs):
-        if '<date_start>' in p.text:
-            p.text = ''
-            p.add_run('Dnia ')
-            p.add_run(date_start).bold = True
-            p.add_run(' r. dokonano wypożyczenia sprzętu o następujących parametrach:')
+        :param date_end: expected day of check-in
+        :type date_end: str
 
-        elif '<date_end>' in p.text:
-            p.text = ''
-            p.add_run('Okres wypożyczenia do dnia:').underline = True
-            p.add_run(' ')
+        :param hardware: hardware products list. Each element of list contains [name, description, serial_number]
+        :type hardware: list of (list [str, str, str])
+        """
 
-            p_date = p.add_run(date_end)
-            p_date.bold = True
-            color = RGBColor(0xff, 0x00, 0x00)  # RED
-            p_date.font.color.rgb = color
+        # Add hardware data to table[0]
+        for name, desc, serial_number in hardware:
+            cells = self.__document.tables[0].add_row().cells
+            cells[0].text = name
+            cells[1].text = desc
+            cells[2].text = serial_number
 
-        elif '<client_info>' in p.text:
-            p.text = lender_address
+        # Add signatures (nested table)
+        for row in self.__document.tables[1].rows[0].cells[0].tables[0].rows:
+            for cell in row.cells:
+                if CLIENT_NAME in cell.text:
+                    cell.text = cell.text.replace(CLIENT_NAME, client_name)
 
-document.save('demo_modified.docx')
+                elif MIDDLEMAN_NAME in cell.text:
+                    cell.text = cell.text.replace(MIDDLEMAN_NAME, middleman_name)
+                    cell.paragraphs[0].paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.RIGHT
 
+        # Insert dates and client address
+        for idx, p in enumerate(self.__document.paragraphs):
+            if DATE_START_TAG in p.text:
+                curr_text = p.text
+                p.clear()
 
+                start_index = curr_text.find(DATE_START_TAG)
 
+                p.add_run(curr_text[:start_index])
+                p.add_run(date_start).bold = True
+                p.add_run(curr_text[start_index + len(DATE_START_TAG):])
+
+            elif DATE_END_TAG in p.text:
+                curr_text = p.text
+                p.clear()
+
+                start_index = curr_text.find(DATE_END_TAG)
+                p.add_run(curr_text[:start_index - 1]).underline = True
+
+                run = p.add_run(' ' + date_end)
+                run.bold = True
+                run.font.color.rgb = RGBColor(0xff, 0x00, 0x00)  # RED
+
+            elif CLIENT_ADDRESS_TAG in p.text:
+                p.text = client_address
+
+    def save_to_file(self, filename):
+        self.__document.save(filename)
