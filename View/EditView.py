@@ -7,7 +7,7 @@ class EditView(tk.Toplevel):
     def __init__(self, master):
         tk.Toplevel.__init__(self, master)
         self.master = master
-        self.protocol('WM_DELETE_WINDOW', self.__quit)
+        self.protocol('WM_DELETE_WINDOW', self.withdraw)
 
         self.title('Input data')
 
@@ -25,6 +25,3 @@ class EditView(tk.Toplevel):
         col_size, row_size = self.grid_size()
         self.columnconfigure(tuple(range(col_size)), weight=1)
         self.rowconfigure(tuple(range(row_size)), weight=1)
-
-    def __quit(self):
-        self.withdraw()

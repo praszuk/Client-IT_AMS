@@ -8,12 +8,10 @@ class EditViewController:
 
         self.__edit_view_model = Model()
         self.__edit_view_model.input_data.add_callback(self.__input_data_changed)
-        self.__edit_view = None
+        self.__edit_view = EditView(self.root)
+        self.__edit_view.withdraw()
 
     def open_view(self):
-        if self.__edit_view is None:
-            self.__edit_view = EditView(self.root)
-
         self.__edit_view.deiconify()
 
     def __input_data_changed(self, text):
