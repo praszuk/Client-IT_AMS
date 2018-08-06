@@ -11,20 +11,7 @@ class MainView(tk.Toplevel):
         self.title = 'Client - IT Assets Management System'
 
         # tree view as table
-        self.tree = tk.ttk.Treeview(self)
-        self.tree['show'] = 'headings'
-
-        self.tree["columns"] = ('ID', 'Asset Tag', 'Serial Number', 'Status')
-        self.tree.column("ID", width=100)
-        self.tree.column("Asset Tag", width=100)
-        self.tree.column("Serial Number", width=100)
-        self.tree.column("Status", width=100)
-
-        self.tree.heading("ID", text="ID")
-        self.tree.heading("Asset Tag", text="Asset Tag")
-        self.tree.heading("Serial Number", text="Serial Number")
-        self.tree.heading("Status", text="Status")
-
+        self.tree = self.__create_tree_view()
         self.tree.grid(column=0, row=0, columnspan=4, rowspan=9, sticky=N + S + E + W)
 
         # Buttons row 2 for tree view, row 3 for action on assets in tree view
@@ -48,6 +35,24 @@ class MainView(tk.Toplevel):
         col_size, row_size = self.grid_size()
         self.columnconfigure(tuple(range(col_size)), weight=1)
         self.rowconfigure(tuple(range(row_size)), weight=1)
+
+    def __create_tree_view(self):
+        tree = tk.ttk.Treeview(self)
+
+        tree['show'] = 'headings'
+
+        tree["columns"] = ('ID', 'Asset Tag', 'Serial Number', 'Status')
+        tree.column("ID", width=100)
+        tree.column("Asset Tag", width=100)
+        tree.column("Serial Number", width=100)
+        tree.column("Status", width=100)
+
+        tree.heading("ID", text="ID")
+        tree.heading("Asset Tag", text="Asset Tag")
+        tree.heading("Serial Number", text="Serial Number")
+        tree.heading("Status", text="Status")
+
+        return tree
 
     def update_tree_view(self):
         pass
