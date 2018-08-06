@@ -1,6 +1,6 @@
 import tkinter as tk
 
-from Controller.Controller import Controller
+from Controller.MainViewController import Controller
 
 if __name__ == '__main__':
     root = tk.Tk()
