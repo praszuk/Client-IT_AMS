@@ -48,3 +48,6 @@ class MainView(tk.Toplevel):
         col_size, row_size = self.grid_size()
         self.columnconfigure(tuple(range(col_size)), weight=1)
         self.rowconfigure(tuple(range(row_size)), weight=1)
+
+    def update_tree_view(self):
+        pass
