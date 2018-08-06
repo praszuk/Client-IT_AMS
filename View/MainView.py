@@ -8,7 +8,7 @@ class MainView(tk.Toplevel):
     def __init__(self, master):
         tk.Toplevel.__init__(self, master)
         self.protocol('WM_DELETE_WINDOW', self.master.destroy)
-        self.title = 'Client - IT Assets Management System'
+        self.title('Client - IT Assets Management System')
 
         # tree view as table
         self.tree = self.__create_tree_view()
