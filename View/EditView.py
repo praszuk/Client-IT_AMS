@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import N, S, E, W, Button
+from tkinter import N, S, E, W, END, Button
 
 
 class EditView(tk.Toplevel):
@@ -11,9 +11,9 @@ class EditView(tk.Toplevel):
 
         self.title('Input data')
 
-        self.text_area = tk.Text(self, height=10, width=30)
-        self.text_area.focus_set()
-        self.text_area.grid(columnspan=2, sticky=N + S + E + W)
+        self.__text_area = tk.Text(self, height=10, width=30)
+        self.__text_area.focus_set()
+        self.__text_area.grid(columnspan=2, sticky=N + S + E + W)
 
         self.ok_btn = Button(self, text='OK')
         self.cancel_btn = Button(self, text='Cancel')
@@ -25,3 +25,8 @@ class EditView(tk.Toplevel):
         col_size, row_size = self.grid_size()
         self.columnconfigure(tuple(range(col_size)), weight=1)
         self.rowconfigure(tuple(range(row_size)), weight=1)
+
+    def set_text(self, new_text):
+        # '1.0' means BEGIN of text area like arr[0]
+        self.__text_area.delete('1.0', END)
+        self.__text_area.insert('1.0', new_text)
