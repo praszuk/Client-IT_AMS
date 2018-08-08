@@ -2,7 +2,9 @@ from docx import Document
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 from docx.shared import RGBColor
 
-TEMPLATE_FILE = '.template.docx'
+from Main import CONFIG
+
+TEMPLATE_FILE = CONFIG.TEMPLATE_FILE_PATH
 
 DATE_START_TAG = '<date_start>'
 DATE_END_TAG = '<date_end>'
