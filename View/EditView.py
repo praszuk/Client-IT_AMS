@@ -30,3 +30,7 @@ class EditView(tk.Toplevel):
         # '1.0' means BEGIN of text area like arr[0]
         self.__text_area.delete('1.0', END)
         self.__text_area.insert('1.0', new_text)
+
+    def get_text(self):
+        # '1.0' means BEGIN of text area like arr[0]
+        return self.__text_area.get('1.0', END)
