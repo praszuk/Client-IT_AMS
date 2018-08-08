@@ -18,11 +18,11 @@ class EditViewController:
     def open_view(self):
         self.__edit_view.deiconify()
 
+    def __cancel_edit(self):
+        self.__edit_view.set_text(self.__model.input_data.get())  # recently text
+        self.__edit_view.withdraw()
+
     def __input_data_changed(self, text):
         pass
         # self.parse_text()
         # self.main_view.update_tree_view()
-
-    def __cancel_edit(self):
-        self.__edit_view.set_text(self.__model.input_data.get())  # recently text
-        self.__edit_view.withdraw()
