@@ -5,10 +5,10 @@ from Model.Observable import Observable
 
 class Asset:
 
-    def __init__(self, asset_id, asset_tag, serial_number):
+    def __init__(self, _id, name, serial_number):
 
-        self.__asset_id = asset_id
-        self.__asset_tag = asset_tag
+        self.__id = _id
+        self.__name = name
         self.__serial_number = serial_number
         self.__status = Observable(None)
 
