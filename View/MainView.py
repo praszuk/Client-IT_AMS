@@ -42,10 +42,10 @@ class MainView(tk.Toplevel):
         tree['show'] = 'headings'
 
         tree["columns"] = ('ID', 'Asset Name', 'Serial Number', 'Status')
-        tree.column("ID", width=100)
+        tree.column("ID", width=50)
         tree.column("Asset Name", width=100)
         tree.column("Serial Number", width=100)
-        tree.column("Status", width=100)
+        tree.column("Status", width=150)
 
         tree.heading("ID", text="ID")
         tree.heading("Asset Name", text="Asset Name")
@@ -54,5 +54,13 @@ class MainView(tk.Toplevel):
 
         return tree
 
-    def update_tree_view(self):
-        pass
+    def update_tree_view(self, assets):
+        # Clear table
+        self.tree.delete(*self.tree.get_children())
+
+        # Fill with new rows
+        for asset in assets:
+            self.tree.insert('', 'end', values=(asset.get_id(),
+                                                asset.get_name(),
+                                                asset.get_serial_number(),
+                                                asset.get_status().name))

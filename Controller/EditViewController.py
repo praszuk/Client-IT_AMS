@@ -30,4 +30,4 @@ class EditViewController:
 
     def __input_data_changed(self, text):
         assets = APIController.parse_hardware_data(text)
-        # self.root.update_tree_view(assets)
+        self.root.update_tree_view(assets)
