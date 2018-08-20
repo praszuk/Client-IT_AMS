@@ -44,13 +44,13 @@ class APIController:
                     print('Not found: {}'.format(asset.get_id()))
 
                 else:
-                    # By ID (database)
-                    if index == 0:
-                        set_asset(response, asset)
-
                     # By Serial Number
-                    elif index == 1:
+                    if index == 0:
                         set_asset(response['rows'][0], asset)
+
+                    # By ID (database)
+                    elif index == 1:
+                        set_asset(response, asset)
 
                     print(asset)
 
@@ -69,6 +69,8 @@ class APIController:
     @staticmethod
     def get_data_from_api(asset_id):
         """
+        Trying to obtain data from Snipe-It API.
+        Firstly by serial number, secondly by database unique id.
 
         :param asset_id: id or serial. It's User input form Text Area EditView (GUI).
         :rtype: (dict, int)
@@ -77,7 +79,7 @@ class APIController:
         """
         from Main import CONFIG
 
-        endpoints: List[str] = ['hardware/', 'hardware/byserial/']
+        endpoints: List[str] = ['hardware/byserial/', 'hardware/']
         headers = {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
@@ -86,12 +88,12 @@ class APIController:
 
         for index, endpoint in enumerate(endpoints):
             r = requests.get(CONFIG.URL + endpoint + asset_id, headers=headers).json()
-
+            print(r)
             if 'status' in r and r['status'] == 'error':
                 if index == 0:
-                    print('Asset with ID: {} error: {}'.format(asset_id, r['messages']))
-                elif index == 1:
                     print('Asset with Serial: {} error: {}'.format(asset_id, r['messages']))
+                elif index == 1:
+                    print('Asset with ID: {} error: {}'.format(asset_id, r['messages']))
                 continue
 
             return r, index
