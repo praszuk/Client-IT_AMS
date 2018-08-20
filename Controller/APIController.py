@@ -1,5 +1,3 @@
-from typing import List
-
 import requests
 
 from Model.AssetModel import AssetStatus, Asset
@@ -15,10 +13,10 @@ class APIController:
     """
 
     @staticmethod
-    def parse_hardware_data(text: str):
+    def parse_hardware_data(serials: str):
         """
 
-        :param text: ids/serial numbers - input from user GUI
+        :param serials: serial numbers - input from user GUI
         :return List[Asset]: asset objects
         """
 
@@ -29,29 +27,21 @@ class APIController:
             _asset.set_status(AssetStatus.get_status(resp['status_label']['id'], resp['status_label']['status_meta']))
 
         assets = []
-        ids = text.split()
 
-        for _id in ids:
+        for serial in serials:
             print('-' * 15)
             asset = Asset()
 
             try:
-                response, index = APIController.get_data_from_api(_id)
+                response = APIController.get_data_from_api(serial)
 
                 if response is None or 'total' in response and response['total'] == 0:
-                    asset.set_id(_id)
+                    asset.set_serial_number(serial)
                     asset.set_status(AssetStatus.ASSET_NOT_FOUND)
                     print('Not found: {}'.format(asset.get_id()))
 
                 else:
-                    # By Serial Number
-                    if index == 0:
-                        set_asset(response['rows'][0], asset)
-
-                    # By ID (database)
-                    elif index == 1:
-                        set_asset(response, asset)
-
+                    set_asset(response['rows'][0], asset)
                     print(asset)
 
                 assets.append(asset)
@@ -67,35 +57,22 @@ class APIController:
         return assets
 
     @staticmethod
-    def get_data_from_api(asset_id):
+    def get_data_from_api(asset_serial):
         """
-        Trying to obtain data from Snipe-It API.
-        Firstly by serial number, secondly by database unique id.
+        Trying to obtain data from Snipe-It API by serial number.
 
-        :param asset_id: id or serial. It's User input form Text Area EditView (GUI).
-        :rtype: (dict, int)
-        :return: response as json or None and index as endpoint which was used 0. hardware or 1. hardware/byserial.
+        :param asset_serial: It's User input form Text Area EditView (GUI).
+        :rtype: dict
+        :return: response as json
 
         """
         from Main import CONFIG
 
-        endpoints: List[str] = ['hardware/byserial/', 'hardware/']
+        endpoint = 'hardware/byserial/'
         headers = {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
             'Authorization': CONFIG.TOKEN
         }
 
-        for index, endpoint in enumerate(endpoints):
-            r = requests.get(CONFIG.URL + endpoint + asset_id, headers=headers).json()
-            print(r)
-            if 'status' in r and r['status'] == 'error':
-                if index == 0:
-                    print('Asset with Serial: {} error: {}'.format(asset_id, r['messages']))
-                elif index == 1:
-                    print('Asset with ID: {} error: {}'.format(asset_id, r['messages']))
-                continue
-
-            return r, index
-
-        return None, -1
+        return requests.get(CONFIG.URL + endpoint + asset_serial, headers=headers).json()
