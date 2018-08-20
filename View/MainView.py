@@ -43,8 +43,8 @@ class MainView(tk.Toplevel):
 
         tree["columns"] = ('ID', 'Asset Name', 'Serial Number', 'Status')
         tree.column("ID", width=50)
-        tree.column("Asset Name", width=100)
-        tree.column("Serial Number", width=100)
+        tree.column("Asset Name", width=150)
+        tree.column("Serial Number", width=150)
         tree.column("Status", width=150)
 
         tree.heading("ID", text="ID")
