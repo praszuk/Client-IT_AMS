@@ -21,13 +21,15 @@ class EditViewController:
         self.__edit_view.deiconify()
 
     def __cancel_edit(self):
-        self.__edit_view.set_text(self.__model.input_data.get())  # recently text
+        self.__edit_view.set_text('\n'.join(self.__model.input_data.get()))  # recently text
         self.__edit_view.withdraw()
 
     def __ok_edit(self):
-        self.__model.set_text(self.__edit_view.get_text())
+        serials = self.__edit_view.get_text().strip().split()  # model as list
+        self.__model.set_text(serials)
+        self.__edit_view.set_text('\n'.join(self.__model.input_data.get()))  # Reformat (like whitespaces)
         self.__edit_view.withdraw()
 
-    def __input_data_changed(self, text):
-        assets = APIController.parse_hardware_data(text)
+    def __input_data_changed(self, serials):
+        assets = APIController.parse_hardware_data(serials)
         self.root.update_tree_view(assets)
