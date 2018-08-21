@@ -23,17 +23,15 @@ class APIController:
         def set_asset(resp, _asset):
             _asset.set_id(int(resp['id']))
             _asset.set_name(resp['name'])
-            _asset.set_serial_number(resp['serial'])
             _asset.set_status(AssetStatus.get_status(resp['status_label']['id'], resp['status_label']['status_meta']))
 
         print('-' * 15)
-        asset = Asset()
+        asset = Asset(serial_number=serial)
 
         try:
             response = APIController.get_data_from_api(serial)
 
             if response is None or 'total' in response and response['total'] == 0:
-                asset.set_serial_number(serial)
                 asset.set_status(AssetStatus.ASSET_NOT_FOUND)
                 print('Not found: {}'.format(asset.get_id()))
 
