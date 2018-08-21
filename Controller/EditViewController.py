@@ -31,5 +31,8 @@ class EditViewController:
         self.__edit_view.withdraw()
 
     def __input_data_changed(self, serials):
-        assets = APIController.parse_hardware_data(serials)
+        assets = []
+        for serial in serials:
+            assets.append(APIController.parse_hardware_data(serial))
+
         self.root.update_tree_view(assets)

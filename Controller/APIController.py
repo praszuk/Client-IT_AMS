@@ -13,11 +13,11 @@ class APIController:
     """
 
     @staticmethod
-    def parse_hardware_data(serials: str):
+    def parse_hardware_data(serial: str):
         """
 
-        :param serials: serial numbers - input from user GUI
-        :return List[Asset]: asset objects
+        :param serial: serial number - one of input from user GUI
+        :return Asset: object
         """
 
         def set_asset(resp, _asset):
@@ -26,35 +26,30 @@ class APIController:
             _asset.set_serial_number(resp['serial'])
             _asset.set_status(AssetStatus.get_status(resp['status_label']['id'], resp['status_label']['status_meta']))
 
-        assets = []
+        print('-' * 15)
+        asset = Asset()
 
-        for serial in serials:
-            print('-' * 15)
-            asset = Asset()
+        try:
+            response = APIController.get_data_from_api(serial)
 
-            try:
-                response = APIController.get_data_from_api(serial)
+            if response is None or 'total' in response and response['total'] == 0:
+                asset.set_serial_number(serial)
+                asset.set_status(AssetStatus.ASSET_NOT_FOUND)
+                print('Not found: {}'.format(asset.get_id()))
 
-                if response is None or 'total' in response and response['total'] == 0:
-                    asset.set_serial_number(serial)
-                    asset.set_status(AssetStatus.ASSET_NOT_FOUND)
-                    print('Not found: {}'.format(asset.get_id()))
+            else:
+                set_asset(response['rows'][0], asset)
+                print(asset)
 
-                else:
-                    set_asset(response['rows'][0], asset)
-                    print(asset)
+        except IOError:
+            asset.set_status(AssetStatus.NOT_CONNECTED)
+            print('Error! Connection problem.')
 
-                assets.append(asset)
+        except KeyError:
+            asset.set_status(AssetStatus.STATUS_NOT_FOUND)
+            print('Error! API problem.')
 
-            except IOError:
-                asset.set_status(AssetStatus.NOT_CONNECTED)
-                print('Error! Connection problem.')
-
-            except KeyError:
-                asset.set_status(AssetStatus.STATUS_NOT_FOUND)
-                print('Error! API problem.')
-
-        return assets
+        return asset
 
     @staticmethod
     def get_data_from_api(asset_serial):
