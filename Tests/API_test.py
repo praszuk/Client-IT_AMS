@@ -81,3 +81,17 @@ def test_parser_hardware_data_io_error_not_connected(mocker):
         assert asset.get_name() == ''
         assert asset.get_serial_number() == serial_number
         assert asset.get_status() == AssetStatus.NOT_CONNECTED
+
+
+def test_parser_hardware_key_error_api_problem(mocker):
+    serial_number = 'Not_important'
+
+    mock = mocker.MagicMock(side_effect=KeyError('API Problem'))
+
+    with mocker.patch('Controller.APIController.APIController.get_data_from_api', mock):
+        asset = APIc.parse_hardware_data(serial_number)
+
+        assert asset.get_id() == -1
+        assert asset.get_name() == ''
+        assert asset.get_serial_number() == serial_number
+        assert asset.get_status() == AssetStatus.STATUS_NOT_FOUND
