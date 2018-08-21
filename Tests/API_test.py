@@ -67,3 +67,17 @@ def test_parser_hardware_data_404_endpoint_not_found(mocker):
         assert asset.get_name() == ''
         assert asset.get_serial_number() == serial_number
         assert asset.get_status() == AssetStatus.STATUS_NOT_FOUND
+
+
+def test_parser_hardware_data_io_error_not_connected(mocker):
+    serial_number = 'Not_important'
+
+    mock = mocker.MagicMock(side_effect=IOError('IOError'))
+
+    with mocker.patch('Controller.APIController.APIController.get_data_from_api', mock):
+        asset = APIc.parse_hardware_data(serial_number)
+
+        assert asset.get_id() == -1
+        assert asset.get_name() == ''
+        assert asset.get_serial_number() == serial_number
+        assert asset.get_status() == AssetStatus.NOT_CONNECTED
