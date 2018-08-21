@@ -28,12 +28,16 @@ class APIController:
         print('-' * 15)
         asset = Asset(serial_number=serial)
 
+        response = None
         try:
             response = APIController.get_data_from_api(serial)
 
             if response is None or 'total' in response and response['total'] == 0:
                 asset.set_status(AssetStatus.ASSET_NOT_FOUND)
                 print('Not found: {}'.format(asset.get_id()))
+
+            elif 'status' in response and response['status'] == 'error':
+                raise KeyError('API Problem')
 
             else:
                 set_asset(response['rows'][0], asset)
@@ -45,7 +49,10 @@ class APIController:
 
         except KeyError:
             asset.set_status(AssetStatus.STATUS_NOT_FOUND)
-            print('Error! API problem.')
+            if response is not None and 'message' in response and response['message'] == 'Unauthorized.':
+                print('Error! Problem with API authorization.')
+            else:
+                print('Error! API problem.')
 
         return asset
 
