@@ -30,3 +30,21 @@ def test_parser_hardware_data_200_ok(mocker):
         assert asset.get_serial_number() == response['rows'][0]['serial']
         assert asset.get_status() == AssetStatus.get_status(response['rows'][0]['status_label']['id'],
                                                             response['rows'][0]['status_label']['status_meta'])
+
+
+def test_parser_hardware_data_200_not_found(mocker):
+    serial_number = 'Not_important'
+    response = {
+        "total": 0,
+        "rows": []
+    }
+
+    mock = mocker.MagicMock(return_value=response)
+
+    with mocker.patch('Controller.APIController.APIController.get_data_from_api', mock):
+        asset = APIc.parse_hardware_data(serial_number)
+
+        assert asset.get_id() == -1
+        assert asset.get_name() == ''
+        assert asset.get_serial_number() == serial_number
+        assert asset.get_status() == AssetStatus.ASSET_NOT_FOUND
