@@ -17,6 +17,10 @@ class AppConfig:
             self.URL = cfg.get('API', 'url').strip()
             self.TOKEN = cfg.get('API', 'token').strip()
 
+            self.GRANT_TYPE = cfg.get('PRODUCT_INFO_API', 'grant_type')
+            self.CLIENT_ID = cfg.get('PRODUCT_INFO_API', 'client_id')
+            self.CLIENT_SECRET = cfg.get('PRODUCT_INFO_API', 'client_secret')
+
         else:
             with open(AppConfig.__CONFIG_FILE, 'w') as configfile:
                 configfile.write('[GENERAL]\n')
@@ -24,6 +28,10 @@ class AppConfig:
                 configfile.write('[API]\n')
                 configfile.write('url=<your url to hardware API>\n')
                 configfile.write('token=<api token with "Bearer" >')
+                configfile.write('[PRODUCT_INFO_API]')
+                configfile.write('grant_type=client_credentials')
+                configfile.write('client_id=<client_id>')
+                configfile.write('client_secret=<client_secret>')
                 configfile.close()
 
             print('Please fill configuration file at: ' + AppConfig.__CONFIG_FILE)
