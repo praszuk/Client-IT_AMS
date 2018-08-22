@@ -1,4 +1,5 @@
 from Controller.APIController import APIController
+from Controller.ProductAPIController import ProductAPIController
 from Model.EditViewModel import EditViewModel
 from View.EditView import EditView
 
@@ -6,6 +7,8 @@ from View.EditView import EditView
 class EditViewController:
     def __init__(self, root):
         self.root = root
+
+        self.__product_api_controller = ProductAPIController()
 
         self.__model = EditViewModel()
         self.__model.input_data.add_callback(self.__input_data_changed)
@@ -31,6 +34,7 @@ class EditViewController:
         self.__edit_view.withdraw()
 
     def __input_data_changed(self, serials):
+        # self.__product_api_controller.update_token()
         assets = []
         for serial in serials:
             assets.append(APIController.parse_hardware_data(serial))
