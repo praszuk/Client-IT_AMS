@@ -34,9 +34,10 @@ class EditViewController:
         self.__edit_view.withdraw()
 
     def __input_data_changed(self, serials):
-        # self.__product_api_controller.update_token()
         assets = []
         for serial in serials:
-            assets.append(APIController.parse_hardware_data(serial))
-
+            asset = APIController.parse_hardware_data(serial)
+            # if asset.get_status() == AssetStatus.ASSET_NOT_FOUND:
+            self.__product_api_controller.get_product_data(serial)
+            assets.append(asset)
         self.root.update_tree_view(assets)
