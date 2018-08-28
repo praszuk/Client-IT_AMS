@@ -1,5 +1,5 @@
-from Controller.APIController import APIController
 from Controller.ProductAPIController import ProductAPIController
+from Controller.StockAPIController import APIController
 from Model.EditViewModel import EditViewModel
 from View.EditView import EditView
 

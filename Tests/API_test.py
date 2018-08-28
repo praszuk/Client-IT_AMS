@@ -1,4 +1,4 @@
-from Controller.APIController import APIController as APIc
+from Controller.StockAPIController import APIController as APIc
 from Model.AssetModel import AssetStatus
 
 
