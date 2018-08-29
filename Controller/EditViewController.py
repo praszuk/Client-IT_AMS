@@ -1,5 +1,6 @@
 from Controller.ProductAPIController import ProductAPIController
 from Controller.StockAPIController import APIController
+from Model.AssetModel import AssetStatus
 from Model.EditViewModel import EditViewModel
 from View.EditView import EditView
 
@@ -35,9 +36,14 @@ class EditViewController:
 
     def __input_data_changed(self, serials):
         assets = []
+
         for serial in serials:
             asset = APIController.parse_hardware_data(serial)
-            # if asset.get_status() == AssetStatus.ASSET_NOT_FOUND:
-            self.__product_api_controller.get_product_data(serial)
+            if asset.get_status() == AssetStatus.ASSET_NOT_FOUND:
+                print('Asset not found, getting data from product info api.')
+                self.__product_api_controller.get_product_data(serial)
+            else:
+                print('Asset exist in local database, skipping query to product info api.')
             assets.append(asset)
+
         self.root.update_tree_view(assets)

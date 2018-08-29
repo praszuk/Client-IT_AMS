@@ -42,5 +42,6 @@ class ProductAPIController:
             print('Token: {}'.format(self.__token))
             print(r.json())
 
-        except:
-            pass
+        except ValueError:
+            print('ERROR with api: {}'.format(r.text))
+            return None
