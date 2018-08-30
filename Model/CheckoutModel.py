@@ -13,7 +13,7 @@ class CheckoutModel:
     def get_check_in_date(self):
         return self.__check_in_date
 
-    def get_middle_man(self):
+    def get_middle_man_name(self):
         return self.__middle_man_name
 
     def get_client_name(self):

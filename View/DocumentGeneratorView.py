@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import Label, Entry, Text, Button, N, S, E, W
+from tkinter import Label, Entry, Text, Button, N, S, E, W, END
 
 
 class DocumentGeneratorView(tk.Toplevel):
@@ -10,11 +10,11 @@ class DocumentGeneratorView(tk.Toplevel):
         self.protocol('WM_DELETE_WINDOW', self.withdraw)
         self.title('Protocol generator form')
 
-        self.__check_out_date_label = Label(self, text='Checkout date: ')
-        self.__check_out_date_label.grid(row=0, column=0)
+        self.__checkout_date_label = Label(self, text='Checkout date: ')
+        self.__checkout_date_label.grid(row=0, column=0)
 
-        self.__check_out_date_entry = Entry(self)
-        self.__check_out_date_entry.grid(row=0, column=1)
+        self.__checkout_date_entry = Entry(self)
+        self.__checkout_date_entry.grid(row=0, column=1)
 
         self.__check_in_date_label = Label(self, text='Expected check-in date: ')
         self.__check_in_date_label.grid(row=1, column=0)
@@ -47,3 +47,23 @@ class DocumentGeneratorView(tk.Toplevel):
         col_size, row_size = self.grid_size()
         self.columnconfigure(tuple(range(col_size)), weight=1)
         self.rowconfigure(tuple(range(row_size)), weight=1)
+
+    def set_checkout_date(self, date):
+        self.__checkout_date_entry.delete(0, END)
+        self.__checkout_date_entry.insert(0, date)
+
+    def set_check_in_date(self, date):
+        self.__check_in_date_entry.delete(0, END)
+        self.__check_in_date_entry.insert(0, date)
+
+    def set_middle_man_name(self, name):
+        self.__middle_full_name_entry.delete(0, END)
+        self.__middle_full_name_entry.insert(0, name)
+
+    def set_client_full_name(self, name):
+        self.__client_full_name_entry.delete(0, END)
+        self.__client_full_name_entry.insert(0, name)
+
+    def set_client_address(self, address):
+        self.__client_address_text_area.delete('1.0', END)
+        self.__client_address_text_area.insert('1.0', address)

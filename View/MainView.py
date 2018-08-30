@@ -64,3 +64,8 @@ class MainView(tk.Toplevel):
                                                 asset.get_name(),
                                                 asset.get_serial_number(),
                                                 asset.get_status().name))
+
+        if len(assets) > 0:
+            self.btn_generate.configure(state='normal')
+        else:
+            self.btn_generate.configure(state='disabled')
