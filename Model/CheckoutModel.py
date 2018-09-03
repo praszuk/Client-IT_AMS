@@ -1,38 +1,51 @@
+from Model.Observable import Observable
+
+
 class CheckoutModel:
 
     def __init__(self):
-        self.__checkout_date = ''
-        self.__check_in_date = ''
-        self.__middle_man_name = ''
-        self.__client_name = ''
-        self.__client_address = ''
+        self.__checkout_date = Observable('')
+        self.__check_in_date = Observable('')
+        self.__middle_man_name = Observable('')
+        self.__client_name = Observable('')
+        self.__client_address = Observable('')
 
-    def get_checkout_date(self):
-        return self.__checkout_date
+    @property
+    def checkout_date(self):
+        return self.__checkout_date.get()
 
-    def get_check_in_date(self):
-        return self.__check_in_date
+    @checkout_date.setter
+    def checkout_date(self, value):
+        self.__checkout_date.set(value)
 
-    def get_middle_man_name(self):
-        return self.__middle_man_name
+    @property
+    def check_in_date(self):
+        return self.__check_in_date.get()
 
-    def get_client_name(self):
-        return self.__client_name
+    @check_in_date.setter
+    def check_in_date(self, value):
+        self.__check_in_date.set(value)
 
-    def get_client_address(self):
-        return self.__client_address
+    @property
+    def middle_man_name(self):
+        return self.__middle_man_name.get()
 
-    def set_checkout_date(self, new_date):
-        self.__checkout_date = new_date
+    @middle_man_name.setter
+    def middle_man_name(self, value):
+        self.__middle_man_name.set(value)
 
-    def set_check_in_date(self, new_date):
-        self.__check_in_date = new_date
+    @property
+    def client_name(self):
+        return self.__client_name.get()
 
-    def set_middle_man_name(self, name):
-        self.__middle_man_name = name
+    @client_name.setter
+    def client_name(self, value):
+        self.__client_name.set(value)
 
-    def set_client_name(self, name):
-        self.__client_name = name
+    @property
+    def client_address(self):
+        return self.__client_address.get()
 
-    def set_client_address(self, address):
-        self.__client_address = address
+    @client_address.setter
+    def client_address(self, value):
+        self.__client_address.set(value)
