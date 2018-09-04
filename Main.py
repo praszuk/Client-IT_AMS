@@ -1,7 +1,7 @@
 import tkinter as tk
 
-from Configuration import AppConfig
 from Controller.MainViewController import Controller
+from Util.Configuration import AppConfig
 
 CONFIG = AppConfig()
 

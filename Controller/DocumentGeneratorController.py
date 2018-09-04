@@ -6,7 +6,7 @@ class DocumentGeneratorController:
         self.checkout_model = checkout_model
         self.hardware = assets
 
-        from DocumentGenerator import Generator
+        from Util.DocumentGenerator import Generator
         self.__generator = Generator()
 
         self.__document_generator_view = DocumentGeneratorView(master)
