@@ -28,35 +28,53 @@ class Generator:
     def __init__(self, template=TEMPLATE_FILE):
         self.__document = Document(template)
 
-    def generate_loan_protocol(self, middleman_name, client_name, client_address, date_start, date_end, hardware):
+    def generate_loan_protocol(self, checkout_model, hardware):
+
         """
         Generate loan protocol using static template from file '.template.docx'
 
-        :param middleman_name: first name and last name
-        :type middleman_name: str
+        :param checkout_model: model contains below fields:
+        :type checkout_model: CheckoutModel
 
-        :param client_name: first name and last name
-        :type client_name: str
+        middleman_name: first name and last name
+        middleman_name: str
 
-        :param client_address: home/business/company address
-        :type client_address: str
+        client_name: first name and last name
+        client_name: str
 
-        :param date_start: begin of checkout
-        :type date_start: str
+        client_address: home/business/company address
+        client_address: str
 
-        :param date_end: expected day of check-in
-        :type date_end: str
+        date_start: begin of checkout
+        date_start: str
 
-        :param hardware: hardware products list. Each element of list contains [name, description, serial_number]
-        :type hardware: list of (list [str, str, str])
+        date_end: expected day of check-in
+        date_end: str
+
+        :param hardware: hardware products list. List of Assets.
+        :type hardware: list of AssetModel
         """
 
+        middleman_name = checkout_model.middle_man_name
+        client_name = checkout_model.client_name
+        client_address = checkout_model.client_address
+        date_start = checkout_model.checkout_date
+        date_end = checkout_model.check_in_date
+
         # Add hardware data to table[0]
-        for name, desc, serial_number in hardware:
+        for asset in hardware:
             cells = self.__document.tables[0].add_row().cells
-            cells[0].text = name
-            cells[1].text = desc
-            cells[2].text = serial_number
+
+            # Remove default paragraph in cell and create new with appropriate alignment
+            for cell in cells:
+                self.delete_paragraph(cell.paragraphs[-1])
+                _p = cell.add_paragraph('')
+                _p.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+
+            # Just setting text to cell (It's important to set it to [0] - first paragraph. With alignment def. above)
+            cells[0].paragraphs[0].text = asset.get_name()
+            # cells[1].paragraphs[0].text = asset.get_notes() # TODO Description
+            cells[2].paragraphs[0].text = asset.get_serial_number()
 
         # Add signatures (nested table)
         for row in self.__document.tables[1].rows[0].cells[0].tables[0].rows:
@@ -96,3 +114,13 @@ class Generator:
 
     def save_to_file(self, filename):
         self.__document.save(filename)
+
+    @staticmethod
+    def delete_paragraph(paragraph):
+        """
+        Remove paragraph in 'safety' way
+        https://github.com/python-openxml/python-docx/issues/33#issuecomment-84706929
+        """
+        p = paragraph._element
+        p.getparent().remove(p)
+        p._p = p._element = None

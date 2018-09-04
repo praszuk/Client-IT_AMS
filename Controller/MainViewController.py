@@ -7,17 +7,18 @@ from View.MainView import MainView
 class Controller:
     def __init__(self, root):
         self.root = root
+        self.assets = []
 
-        self.__checkout_model = CheckoutModel()
+        self.checkout_model = CheckoutModel()
         self.main_view = MainView(root)
         self.main_view.btn_edit.config(command=self.__edit_view_launcher)
         self.main_view.btn_generate.config(command=self.__document_generator_view_launcher)
 
-        self.edit_view_controller = EditViewController(self.main_view)
-        self.document_generator_controller = DocumentGeneratorController(self.main_view, self.__checkout_model)
+        self.edit_view_controller = EditViewController(self.main_view, self.assets)
+        self.doc_gen_controller = DocumentGeneratorController(self.main_view, self.checkout_model, self.assets)
 
     def __edit_view_launcher(self):
         self.edit_view_controller.open_view()
 
     def __document_generator_view_launcher(self):
-        self.document_generator_controller.open_view()
+        self.doc_gen_controller.open_view()
