@@ -1,13 +1,12 @@
 import tkinter as tk
-from tkinter import Label, Entry, Text, Button, N, S, E, W
+from tkinter import Label, Entry, Text, Button, N, S, E, W, filedialog, END
 
 
 class DocumentGeneratorView(tk.Toplevel):
 
-    def __init__(self, master, model):
+    def __init__(self, master):
         tk.Toplevel.__init__(self, master)
         self.master = master
-        self.model = model
 
         self.protocol('WM_DELETE_WINDOW', self.withdraw)
         self.title('Protocol generator form')
@@ -42,13 +41,34 @@ class DocumentGeneratorView(tk.Toplevel):
         self.__client_address_text_area = Text(self, height=5)
         self.__client_address_text_area.grid(row=5, column=0, columnspan=2, sticky=N + S + E + W)
 
-        self.__save_to_file_btn = Button(self, text='Save as...')
-        self.__save_to_file_btn.grid(row=6, column=0, columnspan=2, sticky=N + S + E + W)
+        self.save_to_file_btn = Button(self, text='Save as...')
+        self.save_to_file_btn.grid(row=6, column=0, columnspan=2, sticky=N + S + E + W)
 
         # Properly expand whole grid
         col_size, row_size = self.grid_size()
         self.columnconfigure(tuple(range(col_size)), weight=1)
         self.rowconfigure(tuple(range(row_size)), weight=1)
 
-    def update_form(self):
-        pass
+    @staticmethod
+    def open_file_chooser():
+        return filedialog.asksaveasfilename()
+
+    @property
+    def checkout_date(self):
+        return self.__checkout_date_entry.get()
+
+    @property
+    def check_in_date(self):
+        return self.__check_in_date_entry.get()
+
+    @property
+    def middle_full_name(self):
+        return self.__middle_full_name_entry.get()
+
+    @property
+    def client_full_name(self):
+        return self.__client_full_name_entry.get()
+
+    @property
+    def client_address(self):
+        return self.__client_address_text_area.get('1.0', END)
