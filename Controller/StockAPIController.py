@@ -23,6 +23,7 @@ class APIController:
         def set_asset(resp, _asset):
             _asset.set_id(int(resp['id']))
             _asset.set_name(resp['name'])
+            _asset.set_notes(resp['notes'])
             _asset.set_status(AssetStatus.get_status(resp['status_label']['id'], resp['status_label']['status_meta']))
 
         print('-' * 15)

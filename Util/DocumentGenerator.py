@@ -73,7 +73,7 @@ class Generator:
 
             # Just setting text to cell (It's important to set it to [0] - first paragraph. With alignment def. above)
             cells[0].paragraphs[0].text = asset.get_name()
-            # cells[1].paragraphs[0].text = asset.get_notes() # TODO Description
+            cells[1].paragraphs[0].text = asset.get_notes()
             cells[2].paragraphs[0].text = asset.get_serial_number()
 
         # Add signatures (nested table)

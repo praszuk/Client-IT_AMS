@@ -20,6 +20,7 @@ class DocumentGeneratorController:
         if file_name:
             self.__generator.generate_loan_protocol(self.checkout_model, self.hardware)
             self.__generator.save_to_file(file_name)
+            print('Generating file: {}'.format(file_name))
 
     def update_model_from_form(self):
         self.checkout_model.checkout_date = self.__document_generator_view.checkout_date

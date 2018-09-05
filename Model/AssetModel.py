@@ -5,22 +5,26 @@ from Model.Observable import Observable
 
 class Asset:
 
-    def __init__(self, _id=-1, name='', serial_number=''):
+    def __init__(self, _id=-1, name='', notes='', serial_number=''):
 
         self.__id = _id
         self.__name = name
+        self.__notes = notes
         self.__serial_number = serial_number
         self.__status = Observable(None)
 
     def __str__(self):
-        return 'ID: {}\nName: {}\nSerial Number: {}\nStatus: {}' \
-            .format(self.__id, self.__name, self.__serial_number, self.__status.get().name)
+        return 'ID: {}\nName: {}\nSerial Number: {}\nNotes: {}\nStatus: {}' \
+            .format(self.__id, self.__name, self.__serial_number, self.__notes, self.__status.get().name)
 
     def get_id(self):
         return self.__id
 
     def get_name(self):
         return self.__name
+
+    def get_notes(self):
+        return self.__notes
 
     def get_serial_number(self):
         return self.__serial_number
@@ -33,6 +37,9 @@ class Asset:
 
     def set_name(self, name):
         self.__name = name
+
+    def set_notes(self, notes):
+        self.__notes = notes
 
     def set_serial_number(self, serial):
         self.__serial_number = serial

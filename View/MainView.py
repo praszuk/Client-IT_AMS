@@ -41,16 +41,18 @@ class MainView(tk.Toplevel):
 
         tree['show'] = 'headings'
 
-        tree["columns"] = ('ID', 'Asset Name', 'Serial Number', 'Status')
+        tree["columns"] = ('ID', 'Asset Name', 'Serial Number', 'Status', 'Notes')
         tree.column("ID", width=50)
         tree.column("Asset Name", width=150)
         tree.column("Serial Number", width=150)
         tree.column("Status", width=150)
+        tree.column("Notes", width=200)
 
         tree.heading("ID", text="ID")
         tree.heading("Asset Name", text="Asset Name")
         tree.heading("Serial Number", text="Serial Number")
         tree.heading("Status", text="Status")
+        tree.heading("Notes", text="Notes")
 
         return tree
 
@@ -63,7 +65,8 @@ class MainView(tk.Toplevel):
             self.tree.insert('', 'end', values=(asset.get_id(),
                                                 asset.get_name(),
                                                 asset.get_serial_number(),
-                                                asset.get_status().name))
+                                                asset.get_status().name,
+                                                asset.get_notes()))
 
         if len(assets) > 0:
             self.btn_generate.configure(state='normal')
