@@ -41,8 +41,8 @@ class EditViewController:
         for serial in serials:
             asset = APIController.parse_hardware_data(serial)
             if asset.get_status() == AssetStatus.ASSET_NOT_FOUND:
-                print('Asset not found, getting data from product info api.')
-                self.__product_api_controller.get_product_data(serial)
+                print('Asset not found, getting data from product info api...')
+                asset = self.__product_api_controller.parse_product_data(serial)
             else:
                 print('Asset exist in local database, skipping query to product info api.')
             self.assets.append(asset)
