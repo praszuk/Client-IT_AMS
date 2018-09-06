@@ -5,9 +5,10 @@ from Model.Observable import Observable
 
 class Asset:
 
-    def __init__(self, _id=-1, name='', notes='', serial_number=''):
+    def __init__(self, _id=-1, asset_tag=-1, name='', notes='', serial_number=''):
 
         self.__id = _id
+        self.__asset_tag = asset_tag
         self.__name = name
         self.__notes = notes
         self.__serial_number = serial_number
@@ -19,6 +20,9 @@ class Asset:
 
     def get_id(self):
         return self.__id
+
+    def get_asset_tag(self):
+        return self.__asset_tag
 
     def get_name(self):
         return self.__name
@@ -35,11 +39,15 @@ class Asset:
     def set_id(self, _id):
         self.__id = _id
 
+    def set_asset_tag(self, asset_tag):
+        self.__asset_tag = asset_tag
+
     def set_name(self, name):
         self.__name = name
 
     def set_notes(self, notes):
-        self.__notes = notes
+        if not None:
+            self.__notes = notes
 
     def set_serial_number(self, serial):
         self.__serial_number = serial
@@ -52,6 +60,7 @@ class Asset:
 
 
 class AssetStatus(Enum):
+    READY_TO_ADD = -4  # Not in internal system but found in external system by ProductAPI
     NOT_CONNECTED = -3
     STATUS_NOT_FOUND = -2
     ASSET_NOT_FOUND = -1
