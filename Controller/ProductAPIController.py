@@ -32,7 +32,7 @@ class ProductAPIController:
                 self.__expire_time = time.time()
                 print('Cannot obtain TOKEN from: {}'.format(endpoint))
 
-    def get_product_data(self, serial_number):
+    def get_data_from_api(self, serial_number):
         self.__update_token()
 
         endpoint = 'https://api.cisco.com/product/v1/information/serial_numbers/'
@@ -50,7 +50,7 @@ class ProductAPIController:
 
     def parse_product_data(self, sn):
 
-        response = self.get_product_data(sn)
+        response = self.get_data_from_api(sn)
         if response:
             # print(response)
             if 'pagination_response_record' in response and 'product_list' in response:
