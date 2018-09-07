@@ -5,7 +5,7 @@ from Model.Observable import Observable
 
 class Asset:
 
-    def __init__(self, _id=-1, asset_tag=-1, name='', notes='', serial_number=''):
+    def __init__(self, _id=-1, asset_tag='', name='', notes='', serial_number=''):
 
         self.__id = _id
         self.__asset_tag = asset_tag
