@@ -1,4 +1,4 @@
-from Controller.ProductAPIController import ProductAPIController
+from Controller.ProductAPIController import APIController
 from Controller.StockAPIController import APIController
 from Model.AssetModel import AssetStatus
 from Model.EditViewModel import EditViewModel
@@ -10,7 +10,7 @@ class EditViewController:
         self.root = root
         self.assets = assets
 
-        self.__product_api_controller = ProductAPIController()
+        self.__product_api_controller = APIController()
 
         self.__model = EditViewModel()
         self.__model.input_data.add_callback(self.__input_data_changed)
