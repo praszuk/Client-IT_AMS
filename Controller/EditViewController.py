@@ -25,6 +25,20 @@ class EditViewController:
     def open_view(self):
         self.__edit_view.deiconify()
 
+    def update_assets(self, serials):
+        assets = []
+
+        for serial in serials:
+            asset = APIController.parse_hardware_data(serial)
+            if asset.get_status() == AssetStatus.ASSET_NOT_FOUND:
+                print('Asset not found, getting data from product info api...')
+                asset = self.__product_api_controller.parse_product_data(serial)
+            else:
+                print('Asset exist in local database, skipping query to product info api.')
+            assets.append(asset)
+
+        return assets
+
     def __cancel_edit(self):
         self.__edit_view.set_text('\n'.join(self.__model.input_data.get()))  # recently text
         self.__edit_view.withdraw()
@@ -37,14 +51,5 @@ class EditViewController:
 
     def __input_data_changed(self, serials):
         self.assets.clear()  # To keep reference DON'T ASSIGN new list
-
-        for serial in serials:
-            asset = APIController.parse_hardware_data(serial)
-            if asset.get_status() == AssetStatus.ASSET_NOT_FOUND:
-                print('Asset not found, getting data from product info api...')
-                asset = self.__product_api_controller.parse_product_data(serial)
-            else:
-                print('Asset exist in local database, skipping query to product info api.')
-            self.assets.append(asset)
-
+        self.assets = self.update_assets(serials)[:]  # copy values not reference
         self.root.update_tree_view(self.assets)
