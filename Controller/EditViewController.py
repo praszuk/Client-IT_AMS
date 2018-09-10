@@ -1,12 +1,13 @@
 from Controller.ProductAPIController import APIController
 from Controller.StockAPIController import APIController
+from Model.AssetListModel import AssetListModel
 from Model.AssetModel import AssetStatus
 from Model.EditViewModel import EditViewModel
 from View.EditView import EditView
 
 
 class EditViewController:
-    def __init__(self, root, assets: list):
+    def __init__(self, root, assets: AssetListModel):
         self.root = root
         self.assets = assets
 
@@ -50,6 +51,4 @@ class EditViewController:
         self.__edit_view.withdraw()
 
     def __input_data_changed(self, serials):
-        self.assets.clear()  # To keep reference DON'T ASSIGN new list
-        self.assets = self.update_assets(serials)[:]  # copy values not reference
-        self.root.update_tree_view(self.assets)
+        self.assets.replace(self.update_assets(serials))

@@ -5,7 +5,9 @@ from tkinter.ttk import Treeview
 
 
 class MainView(tk.Toplevel):
-    def __init__(self, master):
+    def __init__(self, master, assets):
+        self.assets = assets
+
         tk.Toplevel.__init__(self, master)
         self.protocol('WM_DELETE_WINDOW', self.master.destroy)
         self.title('Client - IT Assets Management System')
@@ -56,19 +58,19 @@ class MainView(tk.Toplevel):
 
         return tree
 
-    def update_tree_view(self, assets):
+    def update_tree_view(self):
         # Clear table
         self.tree.delete(*self.tree.get_children())
 
         # Fill with new rows
-        for asset in assets:
+        for asset in self.assets:
             self.tree.insert('', 'end', values=(asset.get_id(),
                                                 asset.get_name(),
                                                 asset.get_serial_number(),
                                                 asset.get_status().name,
                                                 asset.get_notes()))
 
-        if len(assets) > 0:
+        if len(self.assets) > 0:
             self.btn_generate.configure(state='normal')
         else:
             self.btn_generate.configure(state='disabled')
