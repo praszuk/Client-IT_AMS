@@ -26,7 +26,8 @@ class Generator:
     """
 
     def __init__(self, template=TEMPLATE_FILE):
-        self.__document = Document(template)
+        self.__template = template
+        self.__document = None
 
     def generate_loan_protocol(self, checkout_model, hardware):
 
@@ -60,6 +61,9 @@ class Generator:
         client_address = checkout_model.client_address
         date_start = checkout_model.checkout_date
         date_end = checkout_model.check_in_date
+
+        # Create doc
+        self.__document = Document(self.__template)
 
         # Add hardware data to table[0]
         for asset in hardware:
