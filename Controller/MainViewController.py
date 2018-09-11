@@ -1,3 +1,5 @@
+from sys import exit
+
 from Controller.DocumentGeneratorController import DocumentGeneratorController
 from Controller.EditViewController import EditViewController
 from Model.AssetListModel import AssetListModel
@@ -16,6 +18,7 @@ class Controller:
         self.main_view.btn_edit.config(command=self.__edit_view_launcher)
         self.main_view.btn_generate.config(command=self.__document_generator_view_launcher)
         self.main_view.btn_refresh.config(command=self.__refresh_assets)
+        self.main_view.btn_exit.config(command=Controller.__close_app)
 
         self.assets.data.add_callback(self.main_view.update_tree_view)
 
@@ -31,3 +34,7 @@ class Controller:
     def __refresh_assets(self):
         serials = [asset.get_serial_number() for asset in self.assets]
         self.assets.replace(self.edit_view_controller.update_assets(serials))
+
+    @staticmethod
+    def __close_app():
+        exit(0)
