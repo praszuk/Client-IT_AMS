@@ -1,5 +1,5 @@
-from Controller.ProductAPIController import APIController
-from Controller.StockAPIController import APIController
+from Controller.ProductAPIController import ProductAPIController
+from Controller.StockAPIController import StockAPIController
 from Model.AssetListModel import AssetListModel
 from Model.AssetModel import AssetStatus
 from Model.EditViewModel import EditViewModel
@@ -11,7 +11,7 @@ class EditViewController:
         self.root = root
         self.assets = assets
 
-        self.__product_api_controller = APIController()
+        self.__product_api_controller = ProductAPIController()
 
         self.__model = EditViewModel()
         self.__model.input_data.add_callback(self.__input_data_changed)
@@ -30,7 +30,7 @@ class EditViewController:
         assets = []
 
         for serial in serials:
-            asset = APIController.parse_hardware_data(serial)
+            asset = StockAPIController.parse_hardware_data(serial)
             if asset.get_status() == AssetStatus.ASSET_NOT_FOUND:
                 print('Asset not found, getting data from product info api...')
                 asset = self.__product_api_controller.parse_product_data(serial)

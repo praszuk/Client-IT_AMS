@@ -1,4 +1,4 @@
-from Controller.StockAPIController import APIController as APIc
+from Controller.StockAPIController import StockAPIController as APIc
 from Model.AssetModel import AssetStatus
 
 
@@ -24,7 +24,7 @@ def test_parser_hardware_data_200_ok(mocker):
 
     mock = mocker.MagicMock(return_value=response)
 
-    with mocker.patch('Controller.StockAPIController.APIController.get_data_from_api', mock):
+    with mocker.patch('Controller.StockAPIController.StockAPIController.get_data_from_api', mock):
         asset = APIc.parse_hardware_data(response['rows'][0]['serial'])
 
         assert asset.get_id() == response['rows'][0]['id']
@@ -44,7 +44,7 @@ def test_parser_hardware_data_200_not_found(mocker):
 
     mock = mocker.MagicMock(return_value=response)
 
-    with mocker.patch('Controller.StockAPIController.APIController.get_data_from_api', mock):
+    with mocker.patch('Controller.StockAPIController.StockAPIController.get_data_from_api', mock):
         asset = APIc.parse_hardware_data(serial_number)
 
         assert asset.get_id() == -1
@@ -63,7 +63,7 @@ def test_parser_hardware_data_401_unauthorized(mocker):
 
     mock = mocker.MagicMock(return_value=response)
 
-    with mocker.patch('Controller.StockAPIController.APIController.get_data_from_api', mock):
+    with mocker.patch('Controller.StockAPIController.StockAPIController.get_data_from_api', mock):
         asset = APIc.parse_hardware_data(serial_number)
 
         assert asset.get_id() == -1
@@ -83,7 +83,7 @@ def test_parser_hardware_data_404_endpoint_not_found(mocker):
 
     mock = mocker.MagicMock(return_value=response)
 
-    with mocker.patch('Controller.StockAPIController.APIController.get_data_from_api', mock):
+    with mocker.patch('Controller.StockAPIController.StockAPIController.get_data_from_api', mock):
         asset = APIc.parse_hardware_data(serial_number)
 
         assert asset.get_id() == -1
@@ -98,7 +98,7 @@ def test_parser_hardware_data_io_error_not_connected(mocker):
 
     mock = mocker.MagicMock(side_effect=IOError('IOError'))
 
-    with mocker.patch('Controller.StockAPIController.APIController.get_data_from_api', mock):
+    with mocker.patch('Controller.StockAPIController.StockAPIController.get_data_from_api', mock):
         asset = APIc.parse_hardware_data(serial_number)
 
         assert asset.get_id() == -1
@@ -113,7 +113,7 @@ def test_parser_hardware_key_error_api_problem(mocker):
 
     mock = mocker.MagicMock(side_effect=KeyError('API Problem'))
 
-    with mocker.patch('Controller.StockAPIController.APIController.get_data_from_api', mock):
+    with mocker.patch('Controller.StockAPIController.StockAPIController.get_data_from_api', mock):
         asset = APIc.parse_hardware_data(serial_number)
 
         assert asset.get_id() == -1

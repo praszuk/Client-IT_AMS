@@ -5,7 +5,7 @@ import requests
 from Model.AssetModel import Asset, AssetStatus
 
 
-class APIController:
+class ProductAPIController:
 
     def __init__(self):
         self.__token = None

@@ -1,6 +1,6 @@
 import json
 
-from Controller.ProductAPIController import APIController as APIc
+from Controller.ProductAPIController import ProductAPIController as APIc
 from Model.AssetModel import AssetStatus
 
 
@@ -15,7 +15,7 @@ single_product = read_json('Resources/ProductAPI_SingleProductFound.json')
 
 def test_parser_product_data_single_product_found_200_ok(mocker):
     mock = mocker.MagicMock(return_value=single_product)
-    with mocker.patch('Controller.ProductAPIController.APIController.get_data_from_api', mock):
+    with mocker.patch('Controller.ProductAPIController.ProductAPIController.get_data_from_api', mock):
         asset = api.parse_product_data(single_product['product_list'][0]['sr_no'])
 
         assert asset.get_id() == -1

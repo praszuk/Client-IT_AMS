@@ -3,7 +3,7 @@ import requests
 from Model.AssetModel import AssetStatus, Asset
 
 
-class APIController:
+class StockAPIController:
     """
 
     Class responsible for connecting to API
@@ -32,7 +32,7 @@ class APIController:
 
         response = None
         try:
-            response = APIController.get_data_from_api(serial)
+            response = StockAPIController.get_data_from_api(serial)
 
             if response is None or 'total' in response and response['total'] == 0:
                 asset.set_status(AssetStatus.ASSET_NOT_FOUND)
