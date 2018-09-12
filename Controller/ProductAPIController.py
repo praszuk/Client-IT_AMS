@@ -70,8 +70,7 @@ class ProductAPIController:
                         # TODO name as model is temporary in internal system. It will be using until global change.
                         a = Asset(name=model, serial_number=sn, asset_tag=sn)
                         a.set_status(AssetStatus.READY_TO_ADD)
-                        return a
 
-            return response
+                        return a
 
         return None

@@ -36,7 +36,9 @@ class EditViewController:
                 asset = self.__product_api_controller.parse_product_data(serial)
             else:
                 print('Asset exist in local database, skipping query to product info api.')
-            assets.append(asset)
+
+            if asset:
+                assets.append(asset)
 
         return assets
 
