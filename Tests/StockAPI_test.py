@@ -1,5 +1,15 @@
+import json
+
 from Controller.StockAPIController import StockAPIController as APIc
 from Model.AssetModel import AssetStatus
+
+
+def read_json(path):
+    with open(path) as data:
+        return json.load(data)
+
+
+SINGLE_MODEL_ID_FOUND = read_json('Resources/StockAPI_SingleModelIDFound.json')
 
 
 def test_parser_hardware_data_200_ok(mocker):
@@ -125,3 +135,12 @@ def test_parser_hardware_key_error_api_problem(mocker):
         assert asset.tag == ''
         assert asset.serial_number == serial_number
         assert asset.status == AssetStatus.STATUS_NOT_FOUND
+
+
+def test_get_model_id_by_model_name(mocker):
+    mock = mocker.MagicMock(return_value=SINGLE_MODEL_ID_FOUND)
+
+    with mocker.patch('Controller.StockAPIController.StockAPIController.get_data_from_api', mock):
+        model_id = APIc.get_model_id(SINGLE_MODEL_ID_FOUND['rows'][0]['name'])
+
+        assert model_id == SINGLE_MODEL_ID_FOUND['rows'][0]['id']
