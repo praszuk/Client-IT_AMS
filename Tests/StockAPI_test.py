@@ -10,6 +10,7 @@ def read_json(path):
 
 
 SINGLE_MODEL_ID_FOUND = read_json('Resources/StockAPI_SingleModelIDFound.json')
+MODEL_ID_DUPLICATED_FOUND = read_json('Resources/StockAPI_ModelIDDuplicatedFound.json')
 
 
 def test_parser_hardware_data_200_ok(mocker):
@@ -137,7 +138,7 @@ def test_parser_hardware_key_error_api_problem(mocker):
         assert asset.status == AssetStatus.STATUS_NOT_FOUND
 
 
-def test_get_model_id_by_model_name(mocker):
+def test_get_model_id_by_model_name_single(mocker):
     mock = mocker.MagicMock(return_value=SINGLE_MODEL_ID_FOUND)
 
     with mocker.patch('Controller.StockAPIController.StockAPIController.get_data_from_api', mock):
