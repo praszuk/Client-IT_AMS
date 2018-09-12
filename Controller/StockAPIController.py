@@ -6,10 +6,13 @@ from Model.AssetModel import AssetStatus, Asset
 class StockAPIController:
     """
 
-    Class responsible for connecting to API
-    Getting data and parsing as Asset objects.
+    Class responsible for connecting to Snipe-IT API
+    Getting data and parsing to objects.
 
     """
+
+    HARDWARE_ENDPOINT = 'hardware/byserial'
+    MODEL_ENDPOINT = 'models'
 
     @staticmethod
     def parse_hardware_data(serial: str):
@@ -33,7 +36,7 @@ class StockAPIController:
 
         response = None
         try:
-            response = StockAPIController.get_data_from_api(serial)
+            response = StockAPIController.get_data_from_api(StockAPIController.HARDWARE_ENDPOINT + '/' + serial)
 
             if response is None or 'total' in response and response['total'] == 0:
                 asset.status = AssetStatus.ASSET_NOT_FOUND
@@ -60,22 +63,52 @@ class StockAPIController:
         return asset
 
     @staticmethod
-    def get_data_from_api(asset_serial):
+    def get_model_id(model_name):
         """
-        Trying to obtain data from Snipe-It API by serial number.
+        :param model_name: Model/PID
+        :rtype: int
+        :return: int with id. If not found returns -1
+        """
 
-        :param asset_serial: It's User input form Text Area EditView (GUI).
+        try:
+            response = StockAPIController.get_data_from_api(endpoint=StockAPIController.MODEL_ENDPOINT,
+                                                            params={'search': model_name})
+
+            if response is None or 'total' in response and response['total'] == 0:
+                print('Model with name {} not found'.format(model_name))
+
+            elif 'total' in response and response['total'] >= 1:
+                for row in response['rows']:
+                    if row['name'] == model_name:
+                        return row['id']
+
+        except IOError:
+            print('Error! Connection problem.')
+
+        except KeyError:
+            print('Error! Problem with getting model_id from model_name.')
+
+        return -1
+
+    @staticmethod
+    def get_data_from_api(endpoint, params=None):
+        """
+        Trying to obtain data from Snipe-It API.
+
+        :param endpoint: end of url with optional data i.e. 'hardware/byserial/123' where /123 must be included in str
+        :param params: standard request dictionary
         :rtype: dict
-        :return: response as json
+        :return: response as json or None
 
         """
         from Main import CONFIG
 
-        endpoint = 'hardware/byserial/'
         headers = {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
             'Authorization': CONFIG.TOKEN
         }
+        if not params:
+            params = {}
 
-        return requests.get(CONFIG.URL + endpoint + asset_serial, headers=headers).json()
+        return requests.get(CONFIG.URL + endpoint, headers=headers, params=params).json()
