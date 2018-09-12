@@ -17,8 +17,10 @@ class Asset:
         self.__status = Observable(None)
 
     def __str__(self):
-        return 'ID: {}\nName: {}\nSerial Number: {}\nNotes: {}\nStatus: {}' \
-            .format(self.id, self.name, self.serial_number, self.notes, self.status.name)
+        d = dict(self.__dict__)
+        d['_Asset__status'] = str(self.status)
+
+        return str(d)
 
     @property
     def status(self):

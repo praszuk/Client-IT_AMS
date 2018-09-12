@@ -23,6 +23,8 @@ class StockAPIController:
             _asset.id = int(resp['id'])
             _asset.tag = resp['asset_tag']
             _asset.name = resp['name']
+            _asset.model_id = int(resp['model']['id'])
+            _asset.model_name = resp['model']['name']
             _asset.notes = resp['notes']
             _asset.status = AssetStatus.get_status(resp['status_label']['id'], resp['status_label']['status_meta'])
 

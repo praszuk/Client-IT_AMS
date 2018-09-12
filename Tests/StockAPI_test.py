@@ -17,6 +17,10 @@ def test_parser_hardware_data_200_ok(mocker):
                     'name': 'Deployed',
                     'status_meta': 'deployed'
                 },
+                'model': {
+                    'id': 1234,
+                    'name': 'model_name'
+                },
                 'notes': 'NOTES'
             }
         ]
@@ -32,7 +36,7 @@ def test_parser_hardware_data_200_ok(mocker):
         assert asset.name == response['rows'][0]['name']
         assert asset.serial_number == response['rows'][0]['serial']
         assert asset.status == AssetStatus.get_status(response['rows'][0]['status_label']['id'],
-                                                            response['rows'][0]['status_label']['status_meta'])
+                                                      response['rows'][0]['status_label']['status_meta'])
 
 
 def test_parser_hardware_data_200_not_found(mocker):

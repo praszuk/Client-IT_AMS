@@ -32,7 +32,7 @@ class Controller:
         self.doc_gen_controller.open_view()
 
     def __refresh_assets(self):
-        serials = [asset.get_serial_number() for asset in self.assets]
+        serials = [asset.serial_number for asset in self.assets]
         self.assets.replace(self.edit_view_controller.update_assets(serials))
 
     @staticmethod
