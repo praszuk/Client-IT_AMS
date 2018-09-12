@@ -144,3 +144,21 @@ def test_get_model_id_by_model_name(mocker):
         model_id = APIc.get_model_id(SINGLE_MODEL_ID_FOUND['rows'][0]['name'])
 
         assert model_id == SINGLE_MODEL_ID_FOUND['rows'][0]['id']
+
+
+def test_get_model_id_by_model_name_duplicated(mocker):
+    mock = mocker.MagicMock(return_value=MODEL_ID_DUPLICATED_FOUND)
+
+    with mocker.patch('Controller.StockAPIController.StockAPIController.get_data_from_api', mock):
+        model_id = APIc.get_model_id(MODEL_ID_DUPLICATED_FOUND['rows'][2]['name'])
+
+        assert model_id == MODEL_ID_DUPLICATED_FOUND['rows'][2]['id']
+
+
+def test_get_model_id_by_model_name_not_found(mocker):
+    mock = mocker.MagicMock(return_value={'total': 0, 'rows': []})
+
+    with mocker.patch('Controller.StockAPIController.StockAPIController.get_data_from_api', mock):
+        model_id = APIc.get_model_id('model_name')
+
+        assert model_id == -1
