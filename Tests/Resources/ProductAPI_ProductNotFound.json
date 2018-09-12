@@ -1,0 +1,29 @@
+{
+  "pagination_response_record": {
+    "last_index": 1,
+    "page_index": 1,
+    "page_records": 1,
+    "title": "Product Info API - Get Product Information by Serial Number(s)",
+    "total_records": 1
+  },
+  "product_list": [
+    {
+      "id": "1",
+      "sr_no": "serial_number",
+      "base_pid": "",
+      "product_name": "",
+      "product_category": "",
+      "rich_media_urls": {
+        "small_image_url": "",
+        "large_image_url": ""
+      },
+      "ErrorResponse": {
+        "APIError": {
+          "ErrorCode": "NO_RECORDS_FOUND",
+          "ErrorDescription": "No records found with the specified serial number",
+          "SuggestedAction": "Please check given serial number"
+        }
+      }
+    }
+  ]
+}
