@@ -1,0 +1,33 @@
+{
+  "pagination_response_record": {
+    "last_index": 1,
+    "page_index": 1,
+    "page_records": 2,
+    "title": "Product Info API - Get Product Information by Serial Number(s)",
+    "total_records": 2
+  },
+  "product_list": [
+    {
+      "id": "1",
+      "sr_no": "serial_number",
+      "base_pid": "product_model",
+      "product_name": "product_name",
+      "product_category": "product_category",
+      "rich_media_urls": {
+        "small_image_url": "",
+        "large_image_url": ""
+      }
+    },
+    {
+      "id": "2",
+      "sr_no": "serial_number",
+      "base_pid": "product_model2",
+      "product_name": "product_name2",
+      "product_category": "product_category2",
+      "rich_media_urls": {
+        "small_image_url": "",
+        "large_image_url": ""
+      }
+    }
+  ]
+}

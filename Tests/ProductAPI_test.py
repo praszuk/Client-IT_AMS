@@ -11,6 +11,7 @@ def read_json(path):
 
 api = APIc()
 single_product = read_json('Resources/ProductAPI_SingleProductFound.json')
+duplication_products = read_json('Resources/ProductAPI_DuplicationProductsFound.json')
 
 
 def test_parser_product_data_single_product_found_200_ok(mocker):
@@ -23,3 +24,11 @@ def test_parser_product_data_single_product_found_200_ok(mocker):
         assert asset.get_name() == single_product['product_list'][0]['base_pid']
         assert asset.get_serial_number() == single_product['product_list'][0]['sr_no']
         assert asset.get_status() == AssetStatus.READY_TO_ADD
+
+
+def test_parser_product_data_duplication_products_found_200_ok(mocker):
+    mock = mocker.MagicMock(return_value=duplication_products)
+    with mocker.patch('Controller.ProductAPIController.ProductAPIController.get_data_from_api', mock):
+        asset = api.parse_product_data(single_product['product_list'][0]['sr_no'])
+
+        assert asset is None
