@@ -11,7 +11,7 @@ def read_json(path):
 
 api = APIc()
 single_product = read_json('Resources/ProductAPI_SingleProductFound.json')
-duplication_products = read_json('Resources/ProductAPI_DuplicationProductsFound.json')
+duplication_products = read_json('Resources/ProductAPI_ProductDuplicatedFound.json')
 product_not_found = read_json('Resources/ProductAPI_ProductNotFound.json')
 
 
