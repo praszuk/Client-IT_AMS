@@ -5,13 +5,15 @@ from Model.Observable import Observable
 
 class Asset:
 
-    def __init__(self, id=-1, tag='', name='', notes='', serial_number=''):
+    def __init__(self, id=-1, tag='', model_id=-1, model_name='', name='', notes='', serial_number=''):
 
         self.id = id
         self.tag = tag
         self.name = name
         self.notes = notes
         self.serial_number = serial_number
+        self.model_id = model_id
+        self.model_name = model_name
         self.__status = Observable(None)
 
     def __str__(self):
