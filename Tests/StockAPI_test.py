@@ -27,11 +27,11 @@ def test_parser_hardware_data_200_ok(mocker):
     with mocker.patch('Controller.StockAPIController.StockAPIController.get_data_from_api', mock):
         asset = APIc.parse_hardware_data(response['rows'][0]['serial'])
 
-        assert asset.get_id() == response['rows'][0]['id']
-        assert asset.get_asset_tag() == response['rows'][0]['asset_tag']
-        assert asset.get_name() == response['rows'][0]['name']
-        assert asset.get_serial_number() == response['rows'][0]['serial']
-        assert asset.get_status() == AssetStatus.get_status(response['rows'][0]['status_label']['id'],
+        assert asset.id == response['rows'][0]['id']
+        assert asset.tag == response['rows'][0]['asset_tag']
+        assert asset.name == response['rows'][0]['name']
+        assert asset.serial_number == response['rows'][0]['serial']
+        assert asset.status == AssetStatus.get_status(response['rows'][0]['status_label']['id'],
                                                             response['rows'][0]['status_label']['status_meta'])
 
 
@@ -47,11 +47,11 @@ def test_parser_hardware_data_200_not_found(mocker):
     with mocker.patch('Controller.StockAPIController.StockAPIController.get_data_from_api', mock):
         asset = APIc.parse_hardware_data(serial_number)
 
-        assert asset.get_id() == -1
-        assert asset.get_name() == ''
-        assert asset.get_asset_tag() == ''
-        assert asset.get_serial_number() == serial_number
-        assert asset.get_status() == AssetStatus.ASSET_NOT_FOUND
+        assert asset.id == -1
+        assert asset.name == ''
+        assert asset.tag == ''
+        assert asset.serial_number == serial_number
+        assert asset.status == AssetStatus.ASSET_NOT_FOUND
 
 
 def test_parser_hardware_data_401_unauthorized(mocker):
@@ -66,11 +66,11 @@ def test_parser_hardware_data_401_unauthorized(mocker):
     with mocker.patch('Controller.StockAPIController.StockAPIController.get_data_from_api', mock):
         asset = APIc.parse_hardware_data(serial_number)
 
-        assert asset.get_id() == -1
-        assert asset.get_name() == ''
-        assert asset.get_asset_tag() == ''
-        assert asset.get_serial_number() == serial_number
-        assert asset.get_status() == AssetStatus.STATUS_NOT_FOUND
+        assert asset.id == -1
+        assert asset.name == ''
+        assert asset.tag == ''
+        assert asset.serial_number == serial_number
+        assert asset.status == AssetStatus.STATUS_NOT_FOUND
 
 
 def test_parser_hardware_data_404_endpoint_not_found(mocker):
@@ -86,11 +86,11 @@ def test_parser_hardware_data_404_endpoint_not_found(mocker):
     with mocker.patch('Controller.StockAPIController.StockAPIController.get_data_from_api', mock):
         asset = APIc.parse_hardware_data(serial_number)
 
-        assert asset.get_id() == -1
-        assert asset.get_name() == ''
-        assert asset.get_asset_tag() == ''
-        assert asset.get_serial_number() == serial_number
-        assert asset.get_status() == AssetStatus.STATUS_NOT_FOUND
+        assert asset.id == -1
+        assert asset.name == ''
+        assert asset.tag == ''
+        assert asset.serial_number == serial_number
+        assert asset.status == AssetStatus.STATUS_NOT_FOUND
 
 
 def test_parser_hardware_data_io_error_not_connected(mocker):
@@ -101,11 +101,11 @@ def test_parser_hardware_data_io_error_not_connected(mocker):
     with mocker.patch('Controller.StockAPIController.StockAPIController.get_data_from_api', mock):
         asset = APIc.parse_hardware_data(serial_number)
 
-        assert asset.get_id() == -1
-        assert asset.get_name() == ''
-        assert asset.get_asset_tag() == ''
-        assert asset.get_serial_number() == serial_number
-        assert asset.get_status() == AssetStatus.NOT_CONNECTED
+        assert asset.id == -1
+        assert asset.name == ''
+        assert asset.tag == ''
+        assert asset.serial_number == serial_number
+        assert asset.status == AssetStatus.NOT_CONNECTED
 
 
 def test_parser_hardware_key_error_api_problem(mocker):
@@ -116,8 +116,8 @@ def test_parser_hardware_key_error_api_problem(mocker):
     with mocker.patch('Controller.StockAPIController.StockAPIController.get_data_from_api', mock):
         asset = APIc.parse_hardware_data(serial_number)
 
-        assert asset.get_id() == -1
-        assert asset.get_name() == ''
-        assert asset.get_asset_tag() == ''
-        assert asset.get_serial_number() == serial_number
-        assert asset.get_status() == AssetStatus.STATUS_NOT_FOUND
+        assert asset.id == -1
+        assert asset.name == ''
+        assert asset.tag == ''
+        assert asset.serial_number == serial_number
+        assert asset.status == AssetStatus.STATUS_NOT_FOUND

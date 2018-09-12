@@ -9,7 +9,6 @@ class StockAPIController:
     Class responsible for connecting to API
     Getting data and parsing as Asset objects.
 
-    This app currently is planned only to fetching data for hardware.
     """
 
     @staticmethod
@@ -21,11 +20,11 @@ class StockAPIController:
         """
 
         def set_asset(resp, _asset):
-            _asset.set_id(int(resp['id']))
-            _asset.set_asset_tag(resp['asset_tag'])
-            _asset.set_name(resp['name'])
-            _asset.set_notes(resp['notes'])
-            _asset.set_status(AssetStatus.get_status(resp['status_label']['id'], resp['status_label']['status_meta']))
+            _asset.id = int(resp['id'])
+            _asset.tag = resp['asset_tag']
+            _asset.name = resp['name']
+            _asset.notes = resp['notes']
+            _asset.status = AssetStatus.get_status(resp['status_label']['id'], resp['status_label']['status_meta'])
 
         print('-' * 15)
         asset = Asset(serial_number=serial)
@@ -35,8 +34,8 @@ class StockAPIController:
             response = StockAPIController.get_data_from_api(serial)
 
             if response is None or 'total' in response and response['total'] == 0:
-                asset.set_status(AssetStatus.ASSET_NOT_FOUND)
-                print('Not found: {}'.format(asset.get_id()))
+                asset.status = AssetStatus.ASSET_NOT_FOUND
+                print('Not found: {}'.format(asset.id))
 
             elif 'status' in response and response['status'] == 'error':
                 raise KeyError('API Problem')
@@ -46,11 +45,11 @@ class StockAPIController:
                 print(asset)
 
         except IOError:
-            asset.set_status(AssetStatus.NOT_CONNECTED)
+            asset.status = AssetStatus.NOT_CONNECTED
             print('Error! Connection problem.')
 
         except KeyError:
-            asset.set_status(AssetStatus.STATUS_NOT_FOUND)
+            asset.status = AssetStatus.STATUS_NOT_FOUND
             if response is not None and 'message' in response and response['message'] == 'Unauthorized.':
                 print('Error! Problem with API authorization.')
             else:

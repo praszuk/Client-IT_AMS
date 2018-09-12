@@ -76,9 +76,9 @@ class Generator:
                 _p.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
 
             # Just setting text to cell (It's important to set it to [0] - first paragraph. With alignment def. above)
-            cells[0].paragraphs[0].text = asset.get_name()
-            cells[1].paragraphs[0].text = asset.get_notes()
-            cells[2].paragraphs[0].text = asset.get_serial_number()
+            cells[0].paragraphs[0].text = asset.name
+            cells[1].paragraphs[0].text = asset.notes
+            cells[2].paragraphs[0].text = asset.serial_number
 
         # Add signatures (nested table)
         for row in self.__document.tables[1].rows[0].cells[0].tables[0].rows:

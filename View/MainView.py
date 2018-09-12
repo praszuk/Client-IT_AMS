@@ -64,11 +64,11 @@ class MainView(tk.Toplevel):
 
         # Fill with new rows
         for asset in self.assets:
-            self.tree.insert('', 'end', values=(asset.get_id(),
-                                                asset.get_name(),
-                                                asset.get_serial_number(),
-                                                asset.get_status().name,
-                                                asset.get_notes()))
+            self.tree.insert('', 'end', values=(asset.id,
+                                                asset.name,
+                                                asset.serial_number,
+                                                asset.status.name,
+                                                asset.notes))
 
         if len(self.assets) > 0:
             self.btn_generate.configure(state='normal')

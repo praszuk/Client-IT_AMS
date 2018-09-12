@@ -5,54 +5,25 @@ from Model.Observable import Observable
 
 class Asset:
 
-    def __init__(self, _id=-1, asset_tag='', name='', notes='', serial_number=''):
+    def __init__(self, id=-1, tag='', name='', notes='', serial_number=''):
 
-        self.__id = _id
-        self.__asset_tag = asset_tag
-        self.__name = name
-        self.__notes = notes
-        self.__serial_number = serial_number
+        self.id = id
+        self.tag = tag
+        self.name = name
+        self.notes = notes
+        self.serial_number = serial_number
         self.__status = Observable(None)
 
     def __str__(self):
         return 'ID: {}\nName: {}\nSerial Number: {}\nNotes: {}\nStatus: {}' \
-            .format(self.__id, self.__name, self.__serial_number, self.__notes, self.__status.get().name)
+            .format(self.id, self.name, self.serial_number, self.notes, self.status.name)
 
-    def get_id(self):
-        return self.__id
-
-    def get_asset_tag(self):
-        return self.__asset_tag
-
-    def get_name(self):
-        return self.__name
-
-    def get_notes(self):
-        return self.__notes
-
-    def get_serial_number(self):
-        return self.__serial_number
-
-    def get_status(self):
+    @property
+    def status(self):
         return self.__status.get()
 
-    def set_id(self, _id):
-        self.__id = _id
-
-    def set_asset_tag(self, asset_tag):
-        self.__asset_tag = asset_tag
-
-    def set_name(self, name):
-        self.__name = name
-
-    def set_notes(self, notes):
-        if not None:
-            self.__notes = notes
-
-    def set_serial_number(self, serial):
-        self.__serial_number = serial
-
-    def set_status(self, status):
+    @status.setter
+    def status(self, status):
         if not isinstance(status, AssetStatus):
             raise ValueError("Status {} not in AssetStatus enum list.".format(status))
         else:
