@@ -41,3 +41,15 @@ def test_parser_product_data_not_found_200_ok(mocker):
         asset = api.parse_product_data(single_product['product_list'][0]['sr_no'])
 
         assert asset is None
+
+
+def test_parser_product_data_api_error_403(mocker):
+    responses = ['Forbidden', 'Not Authorized', 'Account Inactive', 'Account Over Queries Per Second Limit',
+                 'Account Over Rate Limit', 'Rate Limit Exceeded']
+
+    for response in responses:
+        mock = mocker.MagicMock(return_value=response)
+        with mocker.patch('Controller.ProductAPIController.ProductAPIController.get_data_from_api', mock):
+            asset = api.parse_product_data('serial_number')
+
+            assert asset is None
