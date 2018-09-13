@@ -32,6 +32,8 @@ class StockAPIController:
             _asset.model_id = int(resp['model']['id'])
             _asset.model_name = resp['model']['name']
             _asset.notes = resp['notes']
+            _asset.category_id = resp['category']['id']
+            _asset.category_name = resp['category']['name']
             _asset.status = AssetStatus.get_status(resp['status_label']['id'], resp['status_label']['status_meta'])
 
         asset = Asset(serial_number=serial)
