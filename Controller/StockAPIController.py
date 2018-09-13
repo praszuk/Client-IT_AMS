@@ -18,23 +18,30 @@ class StockAPIController:
     CATEGORY_ENDPOINT = 'categories'
 
     @staticmethod
+    def build_asset(resp, _asset):
+        """
+
+        :param resp: response from stock api (get_hardware) It must be 200 OK FOUND
+        :param _asset: new created object which will be build Serial number must be set before that.
+
+        """
+        _asset.id = int(resp['id'])
+        _asset.tag = resp['asset_tag']
+        _asset.name = resp['name']
+        _asset.model_id = int(resp['model']['id'])
+        _asset.model_name = resp['model']['name']
+        _asset.notes = resp['notes']
+        _asset.category_id = resp['category']['id']
+        _asset.category_name = resp['category']['name']
+        _asset.status = AssetStatus.get_status(resp['status_label']['id'], resp['status_label']['status_meta'])
+
+    @staticmethod
     def get_hardware(serial: str):
         """
 
         :param serial: serial number - one of input from user GUI
         :return Asset: object
         """
-
-        def set_asset(resp, _asset):
-            _asset.id = int(resp['id'])
-            _asset.tag = resp['asset_tag']
-            _asset.name = resp['name']
-            _asset.model_id = int(resp['model']['id'])
-            _asset.model_name = resp['model']['name']
-            _asset.notes = resp['notes']
-            _asset.category_id = resp['category']['id']
-            _asset.category_name = resp['category']['name']
-            _asset.status = AssetStatus.get_status(resp['status_label']['id'], resp['status_label']['status_meta'])
 
         asset = Asset(serial_number=serial)
         response = None
@@ -50,7 +57,7 @@ class StockAPIController:
                 raise KeyError('API Problem')
 
             else:
-                set_asset(response['rows'][0], asset)
+                StockAPIController.build_asset(response['rows'][0], asset)
                 logging.info(str(asset))
 
         except IOError:
