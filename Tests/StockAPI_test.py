@@ -174,6 +174,15 @@ def test_get_category_id_by_category_name_duplicated(mocker):
     mock = mocker.MagicMock(return_value=CATEGORY_ID_FOUND_DUPLICATED)
 
     with mocker.patch('Controller.StockAPIController.StockAPIController.get_data_from_api', mock):
-        category_id = APIc.get_category_id(CATEGORY_ID_FOUND_DUPLICATED['rows'][0]['name'])
+        category_id = APIc.get_category_id(CATEGORY_ID_FOUND_DUPLICATED['rows'][2]['name'])
 
-        assert category_id == CATEGORY_ID_FOUND_DUPLICATED['rows'][0]['id']
+        assert category_id == CATEGORY_ID_FOUND_DUPLICATED['rows'][2]['id']
+
+
+def test_get_category_id_by_category_name_not_found(mocker):
+    mock = mocker.MagicMock(return_value={'total': 0, 'rows': []})
+
+    with mocker.patch('Controller.StockAPIController.StockAPIController.get_data_from_api', mock):
+        category_id = APIc.get_category_id('category_name')
+
+        assert category_id == -1
