@@ -16,8 +16,10 @@ class MainView(tk.Toplevel):
         self.tree = self.__create_tree_view()
         self.tree.grid(column=0, row=0, columnspan=4, rowspan=9, sticky=N + S + E + W)
 
-        # Buttons row 2 for tree view, row 3 for action on assets in tree view
+        # Buttons below tree view
         self.btn_edit = Button(self, text='Edit')
+
+        self.btn_auto_add = Button(self, text='Auto-add', state='disabled')
         self.btn_refresh = Button(self, text='Refresh')
 
         self.btn_check_in = Button(self, text='Check-in', state='disabled')
@@ -25,13 +27,15 @@ class MainView(tk.Toplevel):
         self.btn_generate = Button(self, text='Generate', state='disabled')
         self.btn_exit = Button(self, text='Exit')
 
-        self.btn_edit.grid(column=0, row=9, columnspan=2, sticky=N + S + E + W)
-        self.btn_refresh.grid(column=2, row=9, columnspan=2, sticky=N + S + E + W)
+        self.btn_edit.grid(column=0, row=9, columnspan=4, sticky=N + S + E + W)
 
-        self.btn_check_in.grid(column=0, row=10, sticky=N + S + E + W)
-        self.btn_checkout.grid(column=1, row=10, sticky=N + S + E + W)
-        self.btn_generate.grid(column=2, row=10, sticky=N + S + E + W)
-        self.btn_exit.grid(column=3, row=10, sticky=N + S + E + W)
+        self.btn_auto_add.grid(column=0, row=10, columnspan=2, sticky=N + S + E + W)
+        self.btn_refresh.grid(column=2, row=10, columnspan=2, sticky=N + S + E + W)
+
+        self.btn_check_in.grid(column=0, row=11, sticky=N + S + E + W)
+        self.btn_checkout.grid(column=1, row=11, sticky=N + S + E + W)
+        self.btn_generate.grid(column=2, row=11, sticky=N + S + E + W)
+        self.btn_exit.grid(column=3, row=11, sticky=N + S + E + W)
 
         # Properly expand whole grid
         col_size, row_size = self.grid_size()
