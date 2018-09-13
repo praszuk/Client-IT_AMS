@@ -65,7 +65,7 @@ class ProductAPIController:
                         category = response['product_list'][0]['product_category']
 
                         # TODO name as model is temporary in internal system. It will be using until global change.
-                        a = Asset(name=model, serial_number=sn, tag=sn)
+                        a = Asset(name=model, serial_number=sn, tag=sn, model_name=model)
                         a.status = AssetStatus.READY_TO_ADD
 
                         return a
