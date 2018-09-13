@@ -15,6 +15,7 @@ SINGLE_MODEL_ID_FOUND = read_json('Resources/StockAPI_SingleModelIDFound.json')
 MODEL_ID_DUPLICATED_FOUND = read_json('Resources/StockAPI_ModelIDDuplicatedFound.json')
 
 SINGLE_CATEGORY_ID_FOUND = read_json('Resources/StockAPI_SingleCategoryIDFound.json')
+CATEGORY_ID_FOUND_DUPLICATED = read_json('Resources/StockAPI_CategoryIDDuplicatedFound.json')
 
 
 def test_parser_hardware_data_200_ok(mocker):
@@ -167,3 +168,12 @@ def test_get_category_id_by_category_name_single(mocker):
         category_id = APIc.get_category_id(SINGLE_CATEGORY_ID_FOUND['rows'][0]['name'])
 
         assert category_id == SINGLE_CATEGORY_ID_FOUND['rows'][0]['id']
+
+
+def test_get_category_id_by_category_name_duplicated(mocker):
+    mock = mocker.MagicMock(return_value=CATEGORY_ID_FOUND_DUPLICATED)
+
+    with mocker.patch('Controller.StockAPIController.StockAPIController.get_data_from_api', mock):
+        category_id = APIc.get_category_id(CATEGORY_ID_FOUND_DUPLICATED['rows'][0]['name'])
+
+        assert category_id == CATEGORY_ID_FOUND_DUPLICATED['rows'][0]['id']
