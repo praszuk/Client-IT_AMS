@@ -198,3 +198,12 @@ def test_get_category_id_by_category_name_not_found(mocker):
         category_id = APIc.get_category_id('category_name')
 
         assert category_id == -1
+
+
+def test_create_category(mocker):
+    mock = mocker.MagicMock(return_value={"id": 123, "name": "category_name"})
+
+    with mocker.patch('Controller.StockAPIController.StockAPIController.create_data_at_api', mock):
+        category_id = APIc.create_category('category_name')
+
+        assert category_id == 123
