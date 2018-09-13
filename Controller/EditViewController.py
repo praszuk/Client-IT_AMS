@@ -32,7 +32,7 @@ class EditViewController:
         assets = []
 
         for serial in serials:
-            asset = StockAPIController.parse_hardware_data(serial)
+            asset = StockAPIController.get_hardware(serial)
             if asset.status == AssetStatus.ASSET_NOT_FOUND:
                 logging.info('Asset not found, getting data from product info api...')
                 asset = self.__product_api_controller.parse_product_data(serial)

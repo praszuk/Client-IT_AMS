@@ -18,7 +18,7 @@ class StockAPIController:
     CATEGORY_ENDPOINT = 'categories'
 
     @staticmethod
-    def parse_hardware_data(serial: str):
+    def get_hardware(serial: str):
         """
 
         :param serial: serial number - one of input from user GUI
