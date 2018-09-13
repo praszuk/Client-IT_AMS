@@ -29,6 +29,8 @@ def test_parser_hardware_data_200_ok(mocker):
         assert asset.tag == SINGLE_ASSET_FOUND['rows'][0]['asset_tag']
         assert asset.name == SINGLE_ASSET_FOUND['rows'][0]['name']
         assert asset.serial_number == SINGLE_ASSET_FOUND['rows'][0]['serial']
+        assert asset.model_id == SINGLE_ASSET_FOUND['rows'][0]['model']['id']
+        assert asset.model_name == SINGLE_ASSET_FOUND['rows'][0]['model']['name']
         assert asset.status == AssetStatus.get_status(SINGLE_ASSET_FOUND['rows'][0]['status_label']['id'],
                                                       SINGLE_ASSET_FOUND['rows'][0]['status_label']['status_meta'])
 
@@ -48,6 +50,8 @@ def test_parser_hardware_data_200_not_found(mocker):
         assert asset.id == -1
         assert asset.name == ''
         assert asset.tag == ''
+        assert asset.model_id == -1
+        assert asset.model_name == ''
         assert asset.serial_number == serial_number
         assert asset.status == AssetStatus.ASSET_NOT_FOUND
 
@@ -67,6 +71,8 @@ def test_parser_hardware_data_401_unauthorized(mocker):
         assert asset.id == -1
         assert asset.name == ''
         assert asset.tag == ''
+        assert asset.model_id == -1
+        assert asset.model_name == ''
         assert asset.serial_number == serial_number
         assert asset.status == AssetStatus.STATUS_NOT_FOUND
 
@@ -87,6 +93,8 @@ def test_parser_hardware_data_404_endpoint_not_found(mocker):
         assert asset.id == -1
         assert asset.name == ''
         assert asset.tag == ''
+        assert asset.model_id == -1
+        assert asset.model_name == ''
         assert asset.serial_number == serial_number
         assert asset.status == AssetStatus.STATUS_NOT_FOUND
 
@@ -102,6 +110,8 @@ def test_parser_hardware_data_io_error_not_connected(mocker):
         assert asset.id == -1
         assert asset.name == ''
         assert asset.tag == ''
+        assert asset.model_id == -1
+        assert asset.model_name == ''
         assert asset.serial_number == serial_number
         assert asset.status == AssetStatus.NOT_CONNECTED
 
@@ -117,6 +127,8 @@ def test_parser_hardware_key_error_api_problem(mocker):
         assert asset.id == -1
         assert asset.name == ''
         assert asset.tag == ''
+        assert asset.model_id == -1
+        assert asset.model_name == ''
         assert asset.serial_number == serial_number
         assert asset.status == AssetStatus.STATUS_NOT_FOUND
 
