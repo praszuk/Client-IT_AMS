@@ -152,3 +152,23 @@ class StockAPIController:
             params = {}
 
         return requests.get(CONFIG.URL + endpoint, headers=headers, params=params).json()
+
+    @staticmethod
+    def create_data_at_api(endpoint, payload):
+        """
+        Send post request to Snipe-IT api, to create specific object.
+        :param endpoint: url + optional data
+        :param payload: dict with data
+        :rtype: dict
+        :return: json
+
+        """
+        from Main import CONFIG
+
+        headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': CONFIG.TOKEN
+        }
+
+        return requests.post(CONFIG.URL + endpoint, headers, data=payload)
