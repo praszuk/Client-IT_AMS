@@ -49,7 +49,7 @@ class EditViewController:
         self.__edit_view.withdraw()
 
     def __ok_edit(self):
-        serials = self.__edit_view.get_text().strip().split()  # model as list
+        serials = set(self.__edit_view.get_text().strip().split())  # model as set, to keep sn unique
         self.__model.set_text(serials)
         self.__edit_view.set_text('\n'.join(self.__model.input_data.get()))  # Reformat (like whitespaces)
         self.__edit_view.withdraw()
