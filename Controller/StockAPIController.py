@@ -76,12 +76,11 @@ class StockAPIController:
             response = StockAPIController.get_data_from_api(endpoint=StockAPIController.MODEL_ENDPOINT,
                                                             params={'search': model_name})
 
-            if response is None or 'total' in response and response['total'] == 0:
-                logging.info('Model with name {} not found'.format(model_name))
-
-            elif 'total' in response and response['total'] >= 1:
+            if response and 'total' in response and response['total'] >= 1:
                 for row in response['rows']:
                     if row['name'] == model_name:
+                        logging.debug('Model id has been found: id: {}, name: {}'.format(row['id'], model_name))
+
                         return row['id']
 
         except IOError:
@@ -90,6 +89,7 @@ class StockAPIController:
         except KeyError:
             logging.error('Error! Problem with getting model_id from model_name.')
 
+        logging.info('Model with name {} not found'.format(model_name))
         return -1
 
     @staticmethod
