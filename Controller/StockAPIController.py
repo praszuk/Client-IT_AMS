@@ -15,6 +15,7 @@ class StockAPIController:
 
     HARDWARE_ENDPOINT = 'hardware/byserial'
     MODEL_ENDPOINT = 'models'
+    CATEGORY_ENDPOINT = 'categories'
 
     @staticmethod
     def parse_hardware_data(serial: str):
@@ -88,6 +89,35 @@ class StockAPIController:
 
         except KeyError:
             logging.error('Error! Problem with getting model_id from model_name.')
+
+        return -1
+
+    @staticmethod
+    def get_category_id(category_name):
+        """
+        :param category_name:
+        :rtype: int
+        :return: int with id. If not found returns -1
+        """
+
+        try:
+            response = StockAPIController.get_data_from_api(endpoint=StockAPIController.CATEGORY_ENDPOINT,
+                                                            params={'search': category_name})
+
+            if response and 'total' in response and response['total'] >= 1:
+                for row in response['rows']:
+                    if row['name'] == category_name:
+                        logging.debug('Category id has been found: id: {}, name: {}'.format(row['id'], category_name))
+
+                        return row['id']
+
+        except IOError:
+            logging.error('Error! Connection problem with getting category_id.')
+
+        except KeyError:
+            logging.error('Error! Problem with getting category_id from category_name.')
+
+        logging.info('Category with name {} not found'.format(category_name))
 
         return -1
 
