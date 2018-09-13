@@ -9,45 +9,26 @@ def read_json(path):
         return json.load(data)
 
 
+SINGLE_ASSET_FOUND = read_json('Resources/StockAPI_SingleAssetFound.json')
+
 SINGLE_MODEL_ID_FOUND = read_json('Resources/StockAPI_SingleModelIDFound.json')
 MODEL_ID_DUPLICATED_FOUND = read_json('Resources/StockAPI_ModelIDDuplicatedFound.json')
 
 
 def test_parser_hardware_data_200_ok(mocker):
     # Just part of response all is not needed
-    response = {
-        'total': 1,
-        'rows': [
-            {
-                'id': 1,
-                'asset_tag': 'tag',
-                'name': 'Something',
-                'serial': 'ABC120S028D',
-                'status_label': {
-                    'id': 1,
-                    'name': 'Deployed',
-                    'status_meta': 'deployed'
-                },
-                'model': {
-                    'id': 1234,
-                    'name': 'model_name'
-                },
-                'notes': 'NOTES'
-            }
-        ]
-    }
 
-    mock = mocker.MagicMock(return_value=response)
+    mock = mocker.MagicMock(return_value=SINGLE_ASSET_FOUND)
 
     with mocker.patch('Controller.StockAPIController.StockAPIController.get_data_from_api', mock):
-        asset = APIc.parse_hardware_data(response['rows'][0]['serial'])
+        asset = APIc.parse_hardware_data(SINGLE_ASSET_FOUND['rows'][0]['serial'])
 
-        assert asset.id == response['rows'][0]['id']
-        assert asset.tag == response['rows'][0]['asset_tag']
-        assert asset.name == response['rows'][0]['name']
-        assert asset.serial_number == response['rows'][0]['serial']
-        assert asset.status == AssetStatus.get_status(response['rows'][0]['status_label']['id'],
-                                                      response['rows'][0]['status_label']['status_meta'])
+        assert asset.id == SINGLE_ASSET_FOUND['rows'][0]['id']
+        assert asset.tag == SINGLE_ASSET_FOUND['rows'][0]['asset_tag']
+        assert asset.name == SINGLE_ASSET_FOUND['rows'][0]['name']
+        assert asset.serial_number == SINGLE_ASSET_FOUND['rows'][0]['serial']
+        assert asset.status == AssetStatus.get_status(SINGLE_ASSET_FOUND['rows'][0]['status_label']['id'],
+                                                      SINGLE_ASSET_FOUND['rows'][0]['status_label']['status_meta'])
 
 
 def test_parser_hardware_data_200_not_found(mocker):
