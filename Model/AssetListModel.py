@@ -14,6 +14,13 @@ class AssetListModel:
     def add(self, asset):
         self.data.add(asset)
 
+    def get_by_serial_number(self, sn):
+        for asset in self.data.get():
+            if asset.serial_number == sn:
+                return asset
+
+        return None
+
     def remove(self, asset):
         self.data.remove(asset)
 
