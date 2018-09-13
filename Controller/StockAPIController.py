@@ -1,3 +1,5 @@
+import logging
+
 import requests
 
 from Model.AssetModel import AssetStatus, Asset
@@ -31,34 +33,33 @@ class StockAPIController:
             _asset.notes = resp['notes']
             _asset.status = AssetStatus.get_status(resp['status_label']['id'], resp['status_label']['status_meta'])
 
-        print('-' * 15)
         asset = Asset(serial_number=serial)
-
         response = None
+
         try:
             response = StockAPIController.get_data_from_api(StockAPIController.HARDWARE_ENDPOINT + '/' + serial)
 
             if response is None or 'total' in response and response['total'] == 0:
                 asset.status = AssetStatus.ASSET_NOT_FOUND
-                print('Not found: {}'.format(asset.id))
+                logging.info('Not found asset with sn: {}'.format(asset.serial_number))
 
             elif 'status' in response and response['status'] == 'error':
                 raise KeyError('API Problem')
 
             else:
                 set_asset(response['rows'][0], asset)
-                print(asset)
+                logging.info(str(asset))
 
         except IOError:
             asset.status = AssetStatus.NOT_CONNECTED
-            print('Error! Connection problem.')
+            logging.error('Error! Connection problem. Cannot create asset.')
 
         except KeyError:
             asset.status = AssetStatus.STATUS_NOT_FOUND
             if response is not None and 'message' in response and response['message'] == 'Unauthorized.':
-                print('Error! Problem with API authorization.')
+                logging.error('Error! Problem with API authorization. Cannot create asset.')
             else:
-                print('Error! API problem.')
+                logging.error('Error! API problem. Cannot create asset.')
 
         return asset
 
@@ -75,7 +76,7 @@ class StockAPIController:
                                                             params={'search': model_name})
 
             if response is None or 'total' in response and response['total'] == 0:
-                print('Model with name {} not found'.format(model_name))
+                logging.info('Model with name {} not found'.format(model_name))
 
             elif 'total' in response and response['total'] >= 1:
                 for row in response['rows']:
@@ -83,10 +84,10 @@ class StockAPIController:
                         return row['id']
 
         except IOError:
-            print('Error! Connection problem.')
+            logging.error('Error! Connection problem with getting model_id.')
 
         except KeyError:
-            print('Error! Problem with getting model_id from model_name.')
+            logging.error('Error! Problem with getting model_id from model_name.')
 
         return -1
 

@@ -1,3 +1,5 @@
+import logging
+
 from Controller.ProductAPIController import ProductAPIController
 from Controller.StockAPIController import StockAPIController
 from Model.AssetListModel import AssetListModel
@@ -32,10 +34,10 @@ class EditViewController:
         for serial in serials:
             asset = StockAPIController.parse_hardware_data(serial)
             if asset.status == AssetStatus.ASSET_NOT_FOUND:
-                print('Asset not found, getting data from product info api...')
+                logging.info('Asset not found, getting data from product info api...')
                 asset = self.__product_api_controller.parse_product_data(serial)
             else:
-                print('Asset exist in local database, skipping query to product info api.')
+                logging.info('Asset exist in local database, skipping query to product info api.')
 
             if asset:
                 assets.append(asset)

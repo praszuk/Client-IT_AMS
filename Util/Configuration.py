@@ -1,4 +1,6 @@
 import configparser
+import logging
+
 from pathlib import Path
 
 
@@ -34,4 +36,4 @@ class AppConfig:
                 configfile.write('client_secret=<client_secret>')
                 configfile.close()
 
-            print('Please fill configuration file at: ' + AppConfig.__CONFIG_FILE)
+            logging.warning('Please fill configuration file at: ' + AppConfig.__CONFIG_FILE)

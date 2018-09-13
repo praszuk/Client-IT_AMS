@@ -1,3 +1,5 @@
+import logging
+
 from docx import Document
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 from docx.shared import RGBColor
@@ -118,6 +120,7 @@ class Generator:
 
     def save_to_file(self, filename):
         self.__document.save(filename)
+        logging.info('Saved document at {}'.format(filename))
 
     @staticmethod
     def delete_paragraph(paragraph):

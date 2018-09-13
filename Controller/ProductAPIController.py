@@ -1,3 +1,4 @@
+import logging
 import time
 
 import requests
@@ -27,11 +28,11 @@ class ProductAPIController:
                 response = requests.post(url=ProductAPIController.__OAUTH_URL, params=parameters).json()
                 self.__token = response['access_token']
                 self.__expire_time = time.time() + response['expires_in']
-
+                logging.debug('Obtained token. Expiration time: {} seconds'.format(response['expires_in']))
             except IOError:
                 self.__token = None
                 self.__expire_time = time.time()
-                print('Cannot obtain TOKEN from: {}'.format(ProductAPIController.__OAUTH_URL))
+                logging.error('Cannot obtain TOKEN from: {}'.format(ProductAPIController.__OAUTH_URL))
 
     def get_data_from_api(self, serial_number):
         self.__update_token()
@@ -42,7 +43,7 @@ class ProductAPIController:
             return r.json()
 
         except ValueError:
-            print('ERROR with api: {}'.format(r.text))
+            logging.error('ERROR with api: {} Cannot get data from ProductAPI.'.format(r.text))
             return None
 
     def parse_product_data(self, sn):
@@ -53,10 +54,10 @@ class ProductAPIController:
             if 'pagination_response_record' in response and 'product_list' in response:
 
                 if response['pagination_response_record']['total_records'] > 1:
-                    print('Ambiguous serial number! Multiple assets found in database [{}]'.format(sn))
+                    logging.warning('Ambiguous serial number! Multiple assets found in database [{}]'.format(sn))
                 else:
                     if 'ErrorResponse' in response['product_list'][0]:
-                        print('{} [{}]'.format(
+                        logging.error('{} [{}]'.format(
                             response['product_list'][0]['ErrorResponse']['APIError']['ErrorCode'], sn))
 
                     else:

@@ -1,3 +1,4 @@
+import logging
 from sys import exit
 
 from Controller.DocumentGeneratorController import DocumentGeneratorController
@@ -37,4 +38,5 @@ class Controller:
 
     @staticmethod
     def __close_app():
+        logging.info('Closing app')
         exit(0)
