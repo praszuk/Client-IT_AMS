@@ -16,6 +16,8 @@ class Controller:
         self.checkout_model = CheckoutModel()
         self.main_view = MainView(root, self.assets)
 
+        self.main_view.tree.bind('<<TreeviewSelect>>', self.__on_select)
+
         self.main_view.btn_edit.config(command=self.__edit_view_launcher)
         self.main_view.btn_generate.config(command=self.__document_generator_view_launcher)
         self.main_view.btn_refresh.config(command=self.__refresh_assets)
@@ -35,6 +37,12 @@ class Controller:
     def __refresh_assets(self):
         serials = [asset.serial_number for asset in self.assets]
         self.assets.replace(self.edit_view_controller.update_assets(serials))
+
+    def __on_select(self, event):
+        selection = self.main_view.tree.selection()
+        for item in selection:
+            asset = self.assets.get_by_serial_number(self.main_view.tree.item(item)['values'][2])
+            # TODO check if ready to add and execute properly function
 
     @staticmethod
     def __close_app():
