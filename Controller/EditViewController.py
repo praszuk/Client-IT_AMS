@@ -41,6 +41,7 @@ class EditViewController:
 
             if asset:
                 assets.append(asset)
+                logging.info(str(asset))
 
         return assets
 

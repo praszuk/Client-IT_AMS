@@ -1,3 +1,4 @@
+import json
 import logging
 
 import requests
@@ -151,7 +152,7 @@ class StockAPIController:
         if not params:
             params = {}
 
-        return requests.get(CONFIG.URL + endpoint, headers=headers, params=params).json()
+        return requests.get(CONFIG.URL + endpoint, headers=headers, params=params, timeout=5).json()
 
     @staticmethod
     def create_data_at_api(endpoint, payload):
@@ -171,4 +172,38 @@ class StockAPIController:
             'Authorization': CONFIG.TOKEN
         }
 
-        return requests.post(CONFIG.URL + endpoint, headers, data=payload)
+        return requests.post(url=CONFIG.URL + endpoint, headers=headers, data=json.dumps(payload)).json()
+
+    @staticmethod
+    def create_category(category_name):
+        """
+        :param category_name: unique str
+        :rtype: int
+        :return: id new created category or -1 if cannot create
+        """
+
+        # There is few category type asset, accessory, consumable, component but for this app we use only asset
+        payload = {
+            'name': category_name,
+            'category_type': 'asset'
+        }
+
+        try:
+            response = StockAPIController.create_data_at_api(StockAPIController.CATEGORY_ENDPOINT, payload)
+            if response and response['status'] == 'success':
+
+                category_id = response['payload']['id']
+                logging.info('Created category: {}, with id: {}'.format(category_name, category_id))
+
+                return category_id
+
+            else:
+                logging.error('Error with creating category {}: {}'.format(category_name, response['messages']['name']))
+
+        except IOError:
+            logging.error('Error with post request to API. Cannot create category name: ' + category_name)
+
+        except KeyError:
+            logging.error('Error with API response. Cannot create category name: ' + category_name)
+
+        return -1
