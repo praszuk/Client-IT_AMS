@@ -1,0 +1,9 @@
+{
+  "status": "error",
+  "messages": {
+    "name": [
+      "The name must be unique."
+    ]
+  },
+  "payload": null
+}

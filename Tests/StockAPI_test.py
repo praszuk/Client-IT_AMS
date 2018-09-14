@@ -17,6 +17,9 @@ MODEL_ID_DUPLICATED_FOUND = read_json('Resources/StockAPI_ModelIDDuplicatedFound
 SINGLE_CATEGORY_ID_FOUND = read_json('Resources/StockAPI_SingleCategoryIDFound.json')
 CATEGORY_ID_FOUND_DUPLICATED = read_json('Resources/StockAPI_CategoryIDDuplicatedFound.json')
 
+CATEGORY_CREATED = read_json('Resources/StockAPI_CategoryCreated.json')
+CATEGORY_NOT_CREATED = read_json('Resources/StockAPI_CategoryNotCreated.json')
+
 
 def test_get_hardware_200_ok(mocker):
     # Just part of response all is not needed
@@ -201,7 +204,7 @@ def test_get_category_id_by_category_name_not_found(mocker):
 
 
 def test_created_category(mocker):
-    mock = mocker.MagicMock(return_value={"id": 123, "name": "category_name"})
+    mock = mocker.MagicMock(return_value=CATEGORY_CREATED)
 
     with mocker.patch('Controller.StockAPIController.StockAPIController.create_data_at_api', mock):
         category_id = APIc.create_category('category_name')
@@ -210,7 +213,7 @@ def test_created_category(mocker):
 
 
 def test_cannot_create_category(mocker):
-    mock = mocker.MagicMock(return_value={'abc'})
+    mock = mocker.MagicMock(return_value=CATEGORY_NOT_CREATED)
 
     with mocker.patch('Controller.StockAPIController.StockAPIController.create_data_at_api', mock):
         category_id = APIc.create_category('category_name')

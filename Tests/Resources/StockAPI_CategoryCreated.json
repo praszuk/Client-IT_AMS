@@ -1,0 +1,11 @@
+{
+  "status": "success",
+  "messages": "Category created successfully.",
+  "payload": {
+    "name": "category_name",
+    "category_type": "asset",
+    "updated_at": "2018-09-14 14:51:24",
+    "created_at": "2018-09-14 14:51:24",
+    "id": 123
+  }
+}
