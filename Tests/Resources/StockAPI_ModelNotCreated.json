@@ -1,0 +1,12 @@
+{
+  "status": "error",
+  "messages": {
+    "category_id": [
+      "The selected category id is invalid."
+    ],
+    "manufacturer_id": [
+      "The selected manufacturer id is invalid."
+    ]
+  },
+  "payload": null
+}

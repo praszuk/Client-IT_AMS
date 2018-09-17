@@ -1,0 +1,12 @@
+{
+  "status": "success",
+  "messages": "Model created successfully.",
+  "payload": {
+    "name": "model_name",
+    "category_id": 1,
+    "manufacturer_id": 1,
+    "updated_at": "2018-09-14 19:01:04",
+    "created_at": "2018-09-14 19:01:04",
+    "id": 123
+  }
+}
