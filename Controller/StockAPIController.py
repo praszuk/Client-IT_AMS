@@ -14,7 +14,9 @@ class StockAPIController:
 
     """
 
-    HARDWARE_ENDPOINT = 'hardware/byserial'
+    HARDWARE_BY_SERIAL_ENDPOINT = 'hardware/byserial'
+    HARDWARE_ENDPOINT = 'hardware'
+
     MODEL_ENDPOINT = 'models'
     CATEGORY_ENDPOINT = 'categories'
 
@@ -48,7 +50,8 @@ class StockAPIController:
         response = None
 
         try:
-            response = StockAPIController.get_data_from_api(StockAPIController.HARDWARE_ENDPOINT + '/' + serial)
+            response = StockAPIController.get_data_from_api(
+                StockAPIController.HARDWARE_BY_SERIAL_ENDPOINT + '/' + serial)
 
             if response is None or 'total' in response and response['total'] == 0:
                 asset.status = AssetStatus.ASSET_NOT_FOUND
@@ -261,3 +264,51 @@ class StockAPIController:
             logging.error('Error with API response. Cannot create model name: ' + model_name)
 
         return -1
+
+    @staticmethod
+    def create_hardware(asset, status_id):
+        """
+
+        :param asset: Object which is ready to add
+        :param status_id: Status id which is ID from AssetStatus (enum) >= 0 DEFAULT READY TO DEPLOY
+
+        :type asset: Asset
+        :type status_id: int
+
+        :rtype: int
+        :return: id of created asset or -1 if any error
+        """
+
+        payload = {
+
+            'model_id': asset.model_id,
+            'name': asset.name,
+            'serial': asset.serial_number,
+            'asset_tag': asset.tag,
+            'status_id': status_id,
+
+            'company_id': 1,
+            'supplier_id': 1,
+            'requestable': 1
+
+        }
+
+        try:
+            response = StockAPIController.create_data_at_api(StockAPIController.HARDWARE_ENDPOINT, payload)
+            print(response)
+            if response and response['status'] == 'success':
+
+                asset_id = response['payload']['id']
+                logging.info('Created asset: {}, with id: {}'.format(asset.name, asset_id))
+                asset.id = asset_id
+
+                return asset_id
+
+            else:
+                logging.error('Error with creating asset {}: {}'.format(asset.name, response['messages']))
+
+        except IOError:
+            logging.error('Error with post request to API. Cannot create asset name: ' + asset.name)
+
+        except KeyError:
+            logging.error('Error with API response. Cannot create asset name: ' + asset.name)
