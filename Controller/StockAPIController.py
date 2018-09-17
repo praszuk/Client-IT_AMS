@@ -207,3 +207,57 @@ class StockAPIController:
             logging.error('Error with API response. Cannot create category name: ' + category_name)
 
         return -1
+
+    @staticmethod
+    def create_model(model_name, category_id, manufacturer_id=1, unique=True):
+        """
+        Be careful using it. In snipe-it you can make new model with duplicated_name
+
+        :param model_name: PID str
+        :type model_name: str
+
+        :param category_id: id of EXISTS category
+        :type category_id: int
+
+        :param manufacturer_id: optional default it's always 1 it means first manufacturer.
+        :type manufacturer_id: int
+
+        :param unique: if it's true then check if model_name exist before try to create new then return model_id
+        :type unique: bool
+
+        :rtype: int
+        :return: model_id if create or exists  or if error -1
+        """
+
+        if unique:
+            model_id = StockAPIController.get_model_id(model_name)
+            if model_id != -1:
+                logging.warning('Error with creating model. Model_name already exists!')
+                return model_id
+
+        payload = {
+            'name': model_name,
+            'category_id': category_id,
+            'manufacturer_id': manufacturer_id
+        }
+
+        try:
+            response = StockAPIController.create_data_at_api(StockAPIController.MODEL_ENDPOINT, payload)
+            print(response)
+            if response and response['status'] == 'success':
+
+                model_id = response['payload']['id']
+                logging.info('Created model: {}, with id: {}'.format(model_name, model_id))
+
+                return model_id
+
+            else:
+                logging.error('Error with creating model {}: {}'.format(model_name, response['messages']['name']))
+
+        except IOError:
+            logging.error('Error with post request to API. Cannot create model name: ' + model_name)
+
+        except KeyError:
+            logging.error('Error with API response. Cannot create model name: ' + model_name)
+
+        return -1
