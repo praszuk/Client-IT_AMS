@@ -91,7 +91,7 @@ class StockAPIController:
 
             if response and 'total' in response and response['total'] >= 1:
                 for row in response['rows']:
-                    if row['name'] == model_name:
+                    if row['name'].lower() == model_name.lower():
                         logging.debug('Model id has been found: id: {}, name: {}'.format(row['id'], model_name))
 
                         return row['id']
@@ -119,7 +119,7 @@ class StockAPIController:
 
             if response and 'total' in response and response['total'] >= 1:
                 for row in response['rows']:
-                    if row['name'] == category_name:
+                    if row['name'].lower() == category_name.lower():
                         logging.debug('Category id has been found: id: {}, name: {}'.format(row['id'], category_name))
 
                         return row['id']
