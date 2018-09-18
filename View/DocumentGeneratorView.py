@@ -51,7 +51,8 @@ class DocumentGeneratorView(tk.Toplevel):
 
     @staticmethod
     def open_file_chooser():
-        return filedialog.asksaveasfilename()
+        return filedialog.asksaveasfilename(defaultextension=".docx", filetypes=(("docx file", "*.docx"),
+                                                                                 ("All Files", "*.*")))
 
     @property
     def checkout_date(self):
