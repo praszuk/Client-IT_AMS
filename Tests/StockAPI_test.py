@@ -224,3 +224,15 @@ def test_cannot_create_category(mocker):
         category_id = APIc.create_category('category_name')
 
         assert category_id == -1
+
+
+def test_created_model_not_exists(mocker):
+    mock = mocker.MagicMock(return_value=CATEGORY_CREATED)
+    mock1 = mocker.MagicMock(return_value=-1)
+
+    mocker.patch('Controller.StockAPIController.StockAPIController.create_data_at_api', mock)
+    mocker.patch('Controller.StockAPIController.StockAPIController.get_model_id', mock1)
+
+    assert APIc.create_model(CATEGORY_CREATED['payload']['name'], 1, 1) == CATEGORY_CREATED['payload']['id']
+    assert APIc.create_model(CATEGORY_CREATED['payload']['name'].upper(), 1, 1) == CATEGORY_CREATED['payload']['id']
+    assert APIc.create_model(CATEGORY_CREATED['payload']['name'].lower(), 1, 1) == CATEGORY_CREATED['payload']['id']
