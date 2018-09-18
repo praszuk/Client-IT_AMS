@@ -37,6 +37,7 @@ class StockAPIController:
         _asset.category_id = resp['category']['id']
         _asset.category_name = resp['category']['name']
         _asset.status = AssetStatus.get_status(resp['status_label']['id'], resp['status_label']['status_meta'])
+        logging.debug('Created asset: ' + str(_asset))
 
     @staticmethod
     def get_hardware(serial: str):
@@ -53,6 +54,7 @@ class StockAPIController:
             response = StockAPIController.get_data_from_api(
                 StockAPIController.HARDWARE_BY_SERIAL_ENDPOINT + '/' + serial)
 
+            logging.debug(response)
             if response is None or 'total' in response and response['total'] == 0:
                 asset.status = AssetStatus.ASSET_NOT_FOUND
                 logging.info('Not found asset with sn: {}'.format(asset.serial_number))
@@ -88,7 +90,7 @@ class StockAPIController:
         try:
             response = StockAPIController.get_data_from_api(endpoint=StockAPIController.MODEL_ENDPOINT,
                                                             params={'search': model_name})
-
+            logging.debug(response)
             if response and 'total' in response and response['total'] >= 1:
                 for row in response['rows']:
                     if row['name'].lower() == model_name.lower():
@@ -117,6 +119,7 @@ class StockAPIController:
             response = StockAPIController.get_data_from_api(endpoint=StockAPIController.CATEGORY_ENDPOINT,
                                                             params={'search': category_name})
 
+            logging.debug(response)
             if response and 'total' in response and response['total'] >= 1:
                 for row in response['rows']:
                     if row['name'].lower() == category_name.lower():
@@ -193,6 +196,7 @@ class StockAPIController:
 
         try:
             response = StockAPIController.create_data_at_api(StockAPIController.CATEGORY_ENDPOINT, payload)
+            logging.debug(response)
             if response and response['status'] == 'success':
 
                 category_id = response['payload']['id']
@@ -246,7 +250,7 @@ class StockAPIController:
 
         try:
             response = StockAPIController.create_data_at_api(StockAPIController.MODEL_ENDPOINT, payload)
-            print(response)
+            logging.debug(response)
             if response and response['status'] == 'success':
 
                 model_id = response['payload']['id']
@@ -295,7 +299,7 @@ class StockAPIController:
 
         try:
             response = StockAPIController.create_data_at_api(StockAPIController.HARDWARE_ENDPOINT, payload)
-            print(response)
+            logging.debug(response)
             if response and response['status'] == 'success':
 
                 asset_id = response['payload']['id']
