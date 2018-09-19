@@ -1,4 +1,5 @@
 import logging
+import webbrowser
 from sys import exit
 
 from Controller.DocumentGeneratorController import DocumentGeneratorController
@@ -21,6 +22,7 @@ class Controller:
         self.main_view = MainView(root, self.assets)
 
         self.main_view.tree.bind('<<TreeviewSelect>>', self.__on_select)
+        self.main_view.tree.bind('<Double-Button-1>', self.__open_browser)
 
         self.main_view.btn_auto_add.config(command=self.__auto_add)
         self.main_view.btn_edit.config(command=self.__edit_view_launcher)
@@ -57,6 +59,15 @@ class Controller:
             self.main_view.btn_auto_add.config(state='normal')
         else:
             self.main_view.btn_auto_add.config(state='disable')
+
+    def __open_browser(self, event):
+        from Main import CONFIG
+        selection = self.main_view.tree.selection()
+
+        if len(selection) == 1:
+            asset_id = self.main_view.tree.item(selection[0])['values'][0]
+            if asset_id != -1:
+                webbrowser.open('{}/{}/{}'.format(CONFIG.URL, 'hardware', asset_id))
 
     def __auto_add(self):
         for asset in self.assets_to_add:
