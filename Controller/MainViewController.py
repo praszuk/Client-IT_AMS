@@ -5,7 +5,7 @@ from Controller.DocumentGeneratorController import DocumentGeneratorController
 from Controller.EditViewController import EditViewController
 from Controller.StockAPIController import StockAPIController
 from Model.AssetListModel import AssetListModel
-from Model.AssetModel import AssetStatus
+from Model.AssetStatusModel import AssetStatus
 from Model.CheckoutModel import CheckoutModel
 from View.MainView import MainView
 

@@ -3,7 +3,8 @@ import logging
 
 import requests
 
-from Model.AssetModel import AssetStatus, Asset
+from Model.AssetModel import Asset
+from Model.AssetStatusModel import AssetStatus
 
 
 class StockAPIController:

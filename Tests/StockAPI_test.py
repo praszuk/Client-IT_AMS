@@ -1,7 +1,7 @@
 import json
 
 from Controller.StockAPIController import StockAPIController as APIc
-from Model.AssetModel import AssetStatus
+from Model.AssetStatusModel import AssetStatus
 
 
 def read_json(path):

@@ -3,7 +3,7 @@ import logging
 from Controller.ProductAPIController import ProductAPIController
 from Controller.StockAPIController import StockAPIController
 from Model.AssetListModel import AssetListModel
-from Model.AssetModel import AssetStatus
+from Model.AssetStatusModel import AssetStatus
 from Model.EditViewModel import EditViewModel
 from View.EditView import EditView
 

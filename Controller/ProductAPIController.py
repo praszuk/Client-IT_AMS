@@ -3,7 +3,8 @@ import time
 
 import requests
 
-from Model.AssetModel import Asset, AssetStatus
+from Model.AssetModel import Asset
+from Model.AssetStatusModel import AssetStatus
 
 
 class ProductAPIController:
