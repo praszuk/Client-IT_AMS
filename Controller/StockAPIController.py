@@ -15,11 +15,11 @@ class StockAPIController:
 
     """
 
-    HARDWARE_BY_SERIAL_ENDPOINT = 'hardware/byserial'
-    HARDWARE_ENDPOINT = 'hardware'
+    HARDWARE_BY_SERIAL_ENDPOINT = '/api/v1/hardware/byserial'
+    HARDWARE_ENDPOINT = '/api/v1/hardware'
 
-    MODEL_ENDPOINT = 'models'
-    CATEGORY_ENDPOINT = 'categories'
+    MODEL_ENDPOINT = '/api/v1/models'
+    CATEGORY_ENDPOINT = '/api/v1/categories'
 
     @staticmethod
     def build_asset(resp, _asset):
