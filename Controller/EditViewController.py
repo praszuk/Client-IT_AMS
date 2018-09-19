@@ -30,6 +30,7 @@ class EditViewController:
 
     def update_assets(self, serials):
         assets = []
+        not_found = []
 
         for serial in serials:
             asset = StockAPIController.get_hardware(serial)
@@ -41,7 +42,13 @@ class EditViewController:
 
             if asset:
                 assets.append(asset)
-                logging.info(str(asset))
+
+            else:
+                not_found.append(serial)
+
+        logging.info('Found {}/{} assets in internal database.'.format(len(assets), len(serials)))
+        if len(not_found) > 0:
+            logging.info('Cannot found following serial numbers: ' + str(not_found))
 
         return assets
 
