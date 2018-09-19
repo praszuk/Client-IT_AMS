@@ -19,40 +19,28 @@ MIDDLEMAN_NAME = '<middleman>'
 
 class Generator:
     """
-        This class will be generate protocols for loans based on rendered template with CONSTANT fields.
+        This class will generate protocols for loans based on a rendered template with CONSTANT fields.
         Class is not flexible, it is adjusted to one type of protocol which basing on structure:
             - few fields
-            - 2 tables where second contains 1 cell with table inside
-        :param template: path to template docx file
-        :type template: str
+            - 2 tables where second contains 1 cell with table inside (nested)
     """
 
     def __init__(self, template=TEMPLATE_FILE):
+        """
+        :param template: path to template (docx file)
+        :type template: str
+        """
+
         self.__template = template
         self.__document = None
 
     def generate_loan_protocol(self, checkout_model, hardware):
 
         """
-        Generate loan protocol using static template from file '.template.docx'
+        Generate loan protocol using static template from file TEMPLATE_FILE
 
-        :param checkout_model: model contains below fields:
+        :param checkout_model: model contains middleman name, client data and dates
         :type checkout_model: CheckoutModel
-
-        middleman_name: first name and last name
-        middleman_name: str
-
-        client_name: first name and last name
-        client_name: str
-
-        client_address: home/business/company address
-        client_address: str
-
-        date_start: begin of checkout
-        date_start: str
-
-        date_end: expected day of check-in
-        date_end: str
 
         :param hardware: hardware products list. List of Assets.
         :type hardware: list of AssetModel
@@ -125,7 +113,7 @@ class Generator:
     @staticmethod
     def delete_paragraph(paragraph):
         """
-        Remove paragraph in 'safety' way
+        Remove paragraph in 'safety way'
         https://github.com/python-openxml/python-docx/issues/33#issuecomment-84706929
         """
         p = paragraph._element
