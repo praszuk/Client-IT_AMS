@@ -22,8 +22,7 @@ CATEGORY_NOT_CREATED = read_json('Resources/StockAPI_CategoryNotCreated.json')
 
 MODEL_CREATED = read_json('Resources/StockAPI_ModelCreated.json')
 
-
-# MODEL_NOT_CREATED = read_json('Resources/StockAPI_ModelNotCreated.json')
+MODEL_NOT_CREATED = read_json('Resources/StockAPI_ModelNotCreated.json')
 
 
 def test_get_hardware_200_ok(mocker):
@@ -246,3 +245,15 @@ def test_cannot_create_model_exists(mocker):
     mocker.patch('Controller.StockAPIController.StockAPIController.get_model_id', get_model_id_mock)
 
     assert APIc.create_model(CATEGORY_CREATED['payload']['name'], 1, 1) == CATEGORY_CREATED['payload']['id']
+
+
+def test_cannot_create_model_category_or_manufacturer_not_exists(mocker):
+    create_data_at_api_mock = mocker.MagicMock(return_value=MODEL_NOT_CREATED)
+    get_model_id_mock = mocker.MagicMock(return_value=-1)
+
+    mocker.patch('Controller.StockAPIController.StockAPIController.create_data_at_api', create_data_at_api_mock)
+    mocker.patch('Controller.StockAPIController.StockAPIController.get_model_id', get_model_id_mock)
+
+    assert APIc.create_model('model_name', -1, 1) == -1
+    assert APIc.create_model('model_name', 1, -1) == -1
+    assert APIc.create_model('model_name', -1, -1) == -1
