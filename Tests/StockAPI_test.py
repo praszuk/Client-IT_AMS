@@ -1,6 +1,7 @@
 import json
 
 from Controller.StockAPIController import StockAPIController as APIc
+from Model.AssetModel import Asset
 from Model.AssetStatusModel import AssetStatus
 
 
@@ -21,8 +22,9 @@ CATEGORY_CREATED = read_json('Resources/StockAPI_CategoryCreated.json')
 CATEGORY_NOT_CREATED = read_json('Resources/StockAPI_CategoryNotCreated.json')
 
 MODEL_CREATED = read_json('Resources/StockAPI_ModelCreated.json')
-
 MODEL_NOT_CREATED = read_json('Resources/StockAPI_ModelNotCreated.json')
+
+HARDWARE_CREATED = read_json('Resources/StockAPI_HardwareCreated.json')
 
 
 def test_get_hardware_200_ok(mocker):
@@ -257,3 +259,19 @@ def test_cannot_create_model_category_or_manufacturer_not_exists(mocker):
     assert APIc.create_model('model_name', -1, 1) == -1
     assert APIc.create_model('model_name', 1, -1) == -1
     assert APIc.create_model('model_name', -1, -1) == -1
+
+
+def test_created_hardware(mocker):
+    mock = mocker.MagicMock(return_value=HARDWARE_CREATED)
+    asset = Asset()
+
+    asset.id = HARDWARE_CREATED['payload']['id']
+    asset.name = HARDWARE_CREATED['payload']['name']
+    asset.tag = HARDWARE_CREATED['payload']['asset_tag']
+    asset.model_id = HARDWARE_CREATED['payload']['model_id']
+    asset.serial_number = HARDWARE_CREATED['payload']['serial']
+
+    with mocker.patch('Controller.StockAPIController.StockAPIController.create_data_at_api', mock):
+        asset_id = APIc.create_hardware(asset, 1)
+
+        assert asset_id != HARDWARE_CREATED['payload']['id']
