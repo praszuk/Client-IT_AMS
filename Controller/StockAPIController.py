@@ -325,3 +325,5 @@ class StockAPIController:
 
         except KeyError:
             logging.error('Error with API response. Cannot create asset name: ' + asset.name)
+
+        return -1
