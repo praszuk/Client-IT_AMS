@@ -284,6 +284,14 @@ class StockAPIController:
         :return: id of created asset or -1 if any error
         """
 
+        if asset.model_id == -1:
+            logging.error('Cannot create hardware! Model_id is invalid.')
+            return -1
+
+        if status_id < 1:
+            logging.error('Cannot create hardware! Status_id is invalid.')
+            return -1
+
         payload = {
 
             'model_id': asset.model_id,
