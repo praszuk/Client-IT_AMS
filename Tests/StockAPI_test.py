@@ -278,7 +278,9 @@ def test_created_hardware(mocker):
 
 
 def test_cannot_create_hardware_model_id_invalid(mocker):
-    mock = mocker.MagicMock(return_value=HARDWARE_CREATED)
+    response = {'status': 'error', 'messages': {'asset_tag': ['The asset tag must be unique.']}, 'payload': None}
+
+    mock = mocker.MagicMock(return_value=response)
     asset = Asset()
 
     asset.id = HARDWARE_CREATED['payload']['id']
@@ -293,7 +295,26 @@ def test_cannot_create_hardware_model_id_invalid(mocker):
 
 
 def test_cannot_create_hardware_status_id_invalid(mocker):
-    mock = mocker.MagicMock(return_value=HARDWARE_CREATED)
+    response = {'status': 'error', 'messages': {'status_id': ['The selected status id is invalid.']}, 'payload': None}
+
+    mock = mocker.MagicMock(return_value=response)
+    asset = Asset()
+
+    asset.id = HARDWARE_CREATED['payload']['id']
+    asset.name = HARDWARE_CREATED['payload']['name']
+    asset.tag = HARDWARE_CREATED['payload']['asset_tag']
+    asset.model_id = HARDWARE_CREATED['payload']['model_id']
+    asset.serial_number = HARDWARE_CREATED['payload']['serial']
+
+    with mocker.patch('Controller.StockAPIController.StockAPIController.create_data_at_api', mock):
+        asset_id = APIc.create_hardware(asset, -1)
+        assert asset_id == -1
+
+
+def test_cannot_create_hardware_duplicated(mocker):
+    response = {'status': 'error', 'messages': {'asset_tag': ['The asset tag must be unique.']}, 'payload': None}
+
+    mock = mocker.MagicMock(return_value=response)
     asset = Asset()
 
     asset.id = HARDWARE_CREATED['payload']['id']
