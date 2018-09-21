@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import Label, Entry, Text, Button, N, S, E, W, filedialog, END
 
+from Util.CalendarWidget import Datepicker
+
 
 class DocumentGeneratorView(tk.Toplevel):
 
@@ -14,13 +16,13 @@ class DocumentGeneratorView(tk.Toplevel):
         self.__checkout_date_label = Label(self, text='Checkout date: ')
         self.__checkout_date_label.grid(row=0, column=0)
 
-        self.__checkout_date_entry = Entry(self)
+        self.__checkout_date_entry = Datepicker(self)
         self.__checkout_date_entry.grid(row=0, column=1)
 
         self.__check_in_date_label = Label(self, text='Check-in date: ')
         self.__check_in_date_label.grid(row=1, column=0)
 
-        self.__check_in_date_entry = Entry(self)
+        self.__check_in_date_entry = Datepicker(self)
         self.__check_in_date_entry.grid(row=1, column=1)
 
         self.__middle_full_name_label = Label(self, text='Middle-man full name')
@@ -56,11 +58,11 @@ class DocumentGeneratorView(tk.Toplevel):
 
     @property
     def checkout_date(self):
-        return self.__checkout_date_entry.get()
+        return self.__checkout_date_entry.current_text
 
     @property
     def check_in_date(self):
-        return self.__check_in_date_entry.get()
+        return self.__check_in_date_entry.current_text
 
     @property
     def middle_full_name(self):
