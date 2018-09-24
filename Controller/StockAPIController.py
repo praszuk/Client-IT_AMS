@@ -327,3 +327,25 @@ class StockAPIController:
             logging.error('Error with API response. Cannot create asset name: ' + asset.name)
 
         return -1
+
+    @staticmethod
+    def check_in(asset):
+        """
+
+        :param asset: asset object which is deployed
+
+        :rtype: bool
+        :return: True/False depends if success
+        """
+        if asset.id != -1 and asset.status == AssetStatus.DEPLOYED:
+            endpoint = '{}/{}/checkin'.format(StockAPIController.HARDWARE_ENDPOINT, asset.id)
+            payload = {'name': asset.name}
+
+            response = StockAPIController.create_data_at_api(endpoint=endpoint, payload=payload)
+            print(response)
+            logging.debug(response)
+            return True
+        else:
+            logging.warning('Cannot check_in asset which is not in internal system.')
+
+        return False

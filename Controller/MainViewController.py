@@ -25,6 +25,7 @@ class Controller:
         self.main_view.tree.bind('<Double-Button-1>', self.__open_browser)
 
         self.main_view.btn_auto_add.config(command=self.__auto_add)
+        self.main_view.btn_check_in.config(command=self.__check_in)
         self.main_view.btn_edit.config(command=self.__edit_view_launcher)
         self.main_view.btn_generate.config(command=self.__document_generator_view_launcher)
         self.main_view.btn_refresh.config(command=self.__refresh_assets)
@@ -37,6 +38,11 @@ class Controller:
 
     def __edit_view_launcher(self):
         self.edit_view_controller.open_view()
+
+    def __check_in(self):
+        for asset in self.assets:
+            StockAPIController.check_in(asset)
+        self.__refresh_assets()
 
     def __document_generator_view_launcher(self):
         self.doc_gen_controller.open_view()
