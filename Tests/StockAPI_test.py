@@ -326,3 +326,18 @@ def test_cannot_create_hardware_duplicated(mocker):
     with mocker.patch('Controller.StockAPIController.StockAPIController.create_data_at_api', mock):
         asset_id = APIc.create_hardware(asset, -1)
         assert asset_id == -1
+
+
+def test_check_in_hardware(mocker):
+    a = Asset(id=123)
+    a.status = AssetStatus.DEPLOYED
+    notes = 'notes'
+    a.notes = notes
+
+    response = {'status': 'success', 'messages': 'Asset checked in successfully.', 'payload': {'asset': 'tag'}}
+    mock = mocker.MagicMock(return_value=response)
+
+    with mocker.patch('Controller.StockAPIController.StockAPIController.create_data_at_api', mock):
+        APIc.check_in(a)
+        assert a.status != AssetStatus.DEPLOYED  # after check_in status doesn't have to be READY TO DEPLOY
+        assert a.notes == notes
