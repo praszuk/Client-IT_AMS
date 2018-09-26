@@ -22,7 +22,7 @@ class MainView(tk.Toplevel):
         self.btn_auto_add = Button(self, text='Auto-add', state='disabled')
         self.btn_refresh = Button(self, text='Refresh')
 
-        self.btn_check_in = Button(self, text='Check-in')
+        self.btn_check_in = Button(self, text='Check-in all')
         self.btn_checkout = Button(self, text='Checkout', state='disabled')
         self.btn_generate = Button(self, text='Generate', state='disabled')
         self.btn_exit = Button(self, text='Exit')
