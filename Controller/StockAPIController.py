@@ -329,10 +329,12 @@ class StockAPIController:
         return -1
 
     @staticmethod
-    def check_in(asset):
+    def check_in(asset, status=AssetStatus.READY_TO_DEPLOY):
         """
 
         :param asset: asset object which is deployed
+        :param status: status which will be set
+        :type status: AssetStatus
 
         :rtype: bool
         :return: True/False depends if success
@@ -340,11 +342,14 @@ class StockAPIController:
         if asset.id != -1 and asset.status == AssetStatus.DEPLOYED:
             endpoint = '{}/{}/checkin'.format(StockAPIController.HARDWARE_ENDPOINT, asset.id)
             payload = {'name': asset.name}
-
             response = StockAPIController.create_data_at_api(endpoint=endpoint, payload=payload)
-            print(response)
-            logging.debug(response)
-            return True
+
+            if 'status' in response and response['status'] == 'success':
+                asset.status = status
+                logging.debug(response)
+                return True
+            else:
+                logging.error('API error with check_in asset: {} response: {}'.format(str(asset), response))
         else:
             logging.warning('Cannot check_in asset which is not in internal system.')
 
