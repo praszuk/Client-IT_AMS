@@ -36,14 +36,15 @@ class EditViewController:
             asset = StockAPIController.get_hardware(serial)
             if asset and asset.status == AssetStatus.ASSET_NOT_FOUND or asset.status == AssetStatus.NOT_CONNECTED:
                 logging.info('Asset not found, getting data from product info api...')
-                asset = self.__product_api_controller.parse_product_data(serial)
+
+                a = self.__product_api_controller.parse_product_data(serial)
+                if a is not None:
+                    asset = a
             else:
                 logging.info('Asset exist in local database, skipping query to product info api.')
 
-            if asset:
-                assets.append(asset)
-
-            else:
+            assets.append(asset)
+            if asset.status == AssetStatus.ASSET_NOT_FOUND:
                 not_found.append(serial)
 
         logging.info('Found {}/{} assets in internal database.'.format(len(assets), len(serials)))
