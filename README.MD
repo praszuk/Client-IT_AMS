@@ -68,3 +68,5 @@ client_secret=<client_secret>
 You can use your own template. Check [this file](Util/DocumentGenerator.py) for more information.
 ![image](https://user-images.githubusercontent.com/23036224/45762993-e79b4e80-bc2f-11e8-923d-41e6e2ddaecb.png)
 ![image](https://user-images.githubusercontent.com/23036224/45763405-abb4b900-bc30-11e8-96dd-80cbbe219a5f.png)
+
+4. Use _Check-in all_ button to check-in deployed assets.
